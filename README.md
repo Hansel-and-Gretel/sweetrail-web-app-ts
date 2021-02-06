@@ -1,3 +1,12 @@
+# SweeTrail V2
+This is the second version of sweetrail web application(https://github.com/Hansel-and-Gretel/crum_web_app.git)
+
+### main differences 
+* typescript
+* redux / redux-saga
+* styled-components
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
