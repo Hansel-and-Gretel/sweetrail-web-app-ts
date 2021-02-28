@@ -7,6 +7,11 @@ import {
     useLocation,
     BrowserRouter
 } from 'react-router-dom'
+import {Provider} from 'react-redux'
+import {ConnectedRouter} from 'connected-react-router'
+
+import store from './store/index'
+import browserHistory from './lib/history'
 
 
 function AppRoute() {
@@ -23,7 +28,13 @@ function AppRoute() {
 
 function App() {
   return (
-      <AppRoute/>
+      <>
+          <Provider store={store}>
+              <ConnectedRouter history={browserHistory}>
+                  <AppRoute/>
+              </ConnectedRouter>
+          </Provider>
+      </>
   );
 }
 
