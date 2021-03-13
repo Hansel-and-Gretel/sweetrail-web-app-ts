@@ -7,7 +7,6 @@ import browserHistory from '../lib/history'
 import JourneyService, { JourneyState } from './journey/reducers'
 import JourneySaga from './journey/sagas'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import {configureStore} from "@reduxjs/toolkit";
 
 export interface RootState {
     router: RouterState,
@@ -24,27 +23,9 @@ const rootReducer = combineReducers({
 const sagaMiddleware = createSagaMiddleware()
 
 
-declare global {
-    interface Window {
-        __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
-    }
-}
-
-const composeEnhancer =
-    (process.env.NODE_ENV !== 'production' &&
-        window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose) ||
-    compose
-
-
 const index = createStore(
-    // rootReducer,
-    // compose(
-    //     applyMiddleware(sagaMiddleware),
-    //     composeWithDevTools(),
-    // ),
     rootReducer,
     composeWithDevTools(applyMiddleware(sagaMiddleware))
-    // composeEnhancer(applyMiddleware(sagaMiddleware, routerMiddleware(browserHistory))),
 );
 
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import MainPage from "./pages/main";
+import MainPage from './pages/main'
 import {
     Switch,
     Route,
@@ -12,6 +12,7 @@ import {ConnectedRouter} from 'connected-react-router'
 
 import store from './store/index'
 import browserHistory from './lib/history'
+import LandingPage from './pages/landing'
 
 
 function AppRoute() {
@@ -19,7 +20,8 @@ function AppRoute() {
         return (
             <BrowserRouter>
                 <Switch>
-                    <Route exact path="/" component={MainPage}/>
+                    <Route exact path="/" component={LandingPage}/>
+                    <Route exact path="/main" component={MainPage}/>
                 </Switch>
             </BrowserRouter>
         )
