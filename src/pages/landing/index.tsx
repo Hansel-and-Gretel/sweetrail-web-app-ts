@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from "styled-components";
+import Navbar from "../../components/common/Nav/Navbar";
 
 const S = {
     Container: styled.div`
@@ -82,22 +83,23 @@ function LandingPage() {
 
 
     return (
-        <S.Container>
-            <S.TitleContainer>
-                <div>Sweetrail
-                    <p>나의 한걸음 한걸음을 기록하고 </p>
-                    <p>누군가와 일상, 여행, 관심을 공유하고 싶나요?</p>
-                </div>
-            </S.TitleContainer>
-            <S.FormContainer>
-                <form>
-                    <h2>Login</h2>
-                    <input type="email" id="inputEmail" className="form-control" placeholder="이메일 주소" name="email" onChange={()=>{}}/>
-                    <input type="email" id="inputEmail" className="form-control" placeholder="이메일 주소" name="email" onChange={()=>{}}/>
-                    <button>버튼</button>
-                </form>
-            </S.FormContainer>
-        </S.Container>
+        <Navbar/>
+        // <S.Container>
+        //     <S.TitleContainer>
+        //         <div>Sweetrail
+        //             <p>나의 한걸음 한걸음을 기록하고 </p>
+        //             <p>누군가와 일상, 여행, 관심을 공유하고 싶나요?</p>
+        //         </div>
+        //     </S.TitleContainer>
+        //     <S.FormContainer>
+        //         <form>
+        //             <h2>Login</h2>
+        //             <input type="email" id="inputEmail" className="form-control" placeholder="이메일 주소" name="email" onChange={()=>{}}/>
+        //             <input type="email" id="inputEmail" className="form-control" placeholder="이메일 주소" name="email" onChange={()=>{}}/>
+        //             <button>버튼</button>
+        //         </form>
+        //     </S.FormContainer>
+        // </S.Container>
     )
 }
 
