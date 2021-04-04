@@ -79,7 +79,7 @@ const SecondSection = {
       margin-bottom: 50px;
     `,
     Title: styled.div`
-      font-size: 48px;
+      font-size: 36px;
       font-weight: 800;
       @media screen and (max-width: 768px) { //tablet
         font-size: 24px;
@@ -184,7 +184,7 @@ const FourthSection = {
       margin-bottom: 50px;
     `,
     Title: styled.div`
-      font-size: 48px;
+      font-size: 36px;
       font-weight: 800;
       @media screen and (max-width: 768px) { //tablet
         font-size: 24px;
@@ -235,7 +235,7 @@ const FourthSection = {
 
 const FifthSection ={
     Container: styled.div  `
-      margin: 50px auto;
+      margin: 100px auto;
       text-align: center;
       
     `,
