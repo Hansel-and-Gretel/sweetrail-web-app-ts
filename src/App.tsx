@@ -13,6 +13,8 @@ import {ConnectedRouter} from 'connected-react-router'
 import store from './store/index'
 import browserHistory from './lib/history'
 import LandingPage from './pages/landing'
+import SignUpPage from "./pages/signup";
+import LoginPage from "./pages/login";
 
 
 function AppRoute() {
@@ -22,6 +24,11 @@ function AppRoute() {
                 <Switch>
                     <Route exact path="/" component={LandingPage}/>
                     <Route exact path="/main" component={MainPage}/>
+                    <Route exact path="/signup" component={SignUpPage}/>
+                    <Route exact path="/login" component={LoginPage}/>
+
+                    {/*NOT FOUND*/}
+                    <Route component={() => <Redirect to="/" />} />
                 </Switch>
             </BrowserRouter>
         )

@@ -5,18 +5,22 @@ import { connectRouter, routerMiddleware, RouterState } from 'connected-react-ro
 import browserHistory from '../lib/history'
 
 import JourneyService, { JourneyState } from './journey/reducers'
+import UserService, { UserState } from './user/reducers'
 import JourneySaga from './journey/sagas'
+import UserSaga from './user/sagas'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 export interface RootState {
     router: RouterState,
-    journeyState: JourneyState
+    journeyState: JourneyState,
+    userState: UserState
 
 }
 
 const rootReducer = combineReducers({
     router: connectRouter(browserHistory),
-    journeyState: JourneyService
+    journeyState: JourneyService,
+    userState: UserService
 
 })
 
@@ -31,7 +35,8 @@ const index = createStore(
 
 function* rootSaga() {
     yield all([
-        JourneySaga()
+        JourneySaga(),
+        UserSaga()
     ])
 }
 sagaMiddleware.run(rootSaga)

@@ -19,15 +19,13 @@ export class ApiError extends Error {
 }
 
 export const api = axios.create({
-    baseURL: API_URL
+    baseURL: 'http://localhost:5000'
 })
 
 api.interceptors.response.use((response) => {
     return response
 }, (error: AxiosError) => {
-    if (error.response?.data.result === 'failure') {
-        // 예외처리
-    }
+    return Promise.reject(error?.response?.data)
 })
 
 export default {api}

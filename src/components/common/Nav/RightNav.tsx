@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
 import * as colors from './../../../styles/colors';
+import { useHistory } from "react-router-dom";
 
 interface Props{
     open: boolean
@@ -14,6 +15,7 @@ const Ul = styled.ul<{open: boolean}>`
 
   li {
     padding: 18px 10px;
+    cursor: pointer;
     
   }
   .pointColor {
@@ -40,13 +42,17 @@ const Ul = styled.ul<{open: boolean}>`
 `;
 
 const RightNav = ({ open } : Props) => {
+
+    const history = useHistory()
+
+
     return (
         <Ul open={open}>
             <li>About Trail</li>
             <li>Guideline</li>
             <li>Contact Us</li>
             <li>Log In</li>
-            <li className='pointColor'>Sign Up</li>
+            <li className='pointColor' onClick={() => history.push('/signup')}>Sign Up</li>
         </Ul>
     )
 }
