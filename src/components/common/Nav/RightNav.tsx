@@ -7,6 +7,7 @@ interface Props{
     open: boolean
 }
 const Ul = styled.ul<{open: boolean}>`
+  z-index: 100;
   list-style: none;
   display: flex;
   flex-flow: row nowrap;
@@ -51,7 +52,7 @@ const RightNav = ({ open } : Props) => {
             <li>About Trail</li>
             <li>Guideline</li>
             <li>Contact Us</li>
-            <li>Log In</li>
+            <li onClick={() => history.push('/login')}>Log In</li>
             <li className='pointColor' onClick={() => history.push('/signup')}>Sign Up</li>
         </Ul>
     )

@@ -18,7 +18,7 @@ interface Props {
     value: string,
     options: any
 }
-export default function setCookie({name, value, options = {}} : Props) {
+export default function setCookie(name: string, value: string, options: any = {}) {
 
     options = {
         path: '/',

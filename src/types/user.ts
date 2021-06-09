@@ -1,8 +1,26 @@
 export interface LoginResType {
     isLogin: boolean;
+    message: string;
+    user: {
+        userId: number;
+        userName: string;
+        userImg: string;
+        journeyType: string;
+        lifeStyle: string;
+        token: string;
+    }
 }
 export interface SignUpResType {
     registerSuccess: boolean
+}
+
+export interface AuthType {
+    isAuth: boolean;
+    userId: number;
+    userName: string;
+    userImg: string;
+    journeyType: string;
+    lifeStyle: string;
 }
 
 export interface UserType {

@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from "styled-components";
+import Navbar from "../../components/common/Nav/Navbar";
 
 const S = {
     Container: styled.div`
@@ -7,18 +8,29 @@ const S = {
       height: 100vh;
     `,
     Group: styled.div``,
+    TopContainer: styled.div`
+        width: 100%;
+        height: 300px;
+      
+        
+    `,
     Wrapper: styled.div`
       @media (min-width: 1200px) {
         
       }
     `,
+
 }
 
 function MainPage() {
     return(
-        <S.Container>
-            <>Sweetrail 메인페이지입니다. 과연이게 맞느지?</>
-        </S.Container>
+        <>
+            <Navbar/>
+            <S.Container>
+
+            </S.Container>
+        </>
+
     )
 }
 

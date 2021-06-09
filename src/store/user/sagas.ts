@@ -1,17 +1,31 @@
-import { call, put, all, takeEvery } from 'redux-saga/effects'
+import { call, put, all, takeEvery, takeLeading, select } from 'redux-saga/effects'
 import { ActionType } from 'typesafe-actions'
-
+import { useCookies } from 'react-cookie';
 import * as actions from './actions'
 import * as request from './requests'
+// import {push} from "react-router-redux"
+import setCookie from "../../lib/cookie";
+import {push} from "connected-react-router";
+import {Simulate} from "react-dom/test-utils";
+import * as userSelector from './selectors';
+
+
+
 
 export function* fetchLoginSaga(action: ActionType<typeof actions.loginUserAsync.request>) {
     try {
-        const data = yield call(request.loginUser, action.payload.form)
+        const {data} = yield call(request.loginUser, action.payload.form)
         yield put(actions.loginUserAsync.success(data))
-        alert('로그인에 성공했습니다.')
+        //token을 브라우저 쿠키에 저장하자
+        setCookie('trail-token', data.user.token, {
+            "max-age": 60 * 60 * 24 * 60,
+            expires: 1, //1일 유효기간
+        })
+        yield put(push('/main'))
+
     } catch (e) {
         yield put(actions.loginUserAsync.failure())
-        alert('로그인에 실패했습니다.')
+        alert('로그인에 실패했습니다. 아이디와 이메일을 다시 확인해주세요')
     }
 
 }
@@ -21,6 +35,7 @@ export function* fetchSignUpSaga(action: ActionType<typeof actions.signupUserAsy
         const data = yield call(request.signupUser, action.payload.form)
         yield put(actions.signupUserAsync.success(data))
         alert('회원가입에 성공했습니다.')
+        yield put(push('/login'))
     } catch (e) {
         yield put(actions.signupUserAsync.failure())
         alert('회원가입에 실패했습니다.')
@@ -28,11 +43,33 @@ export function* fetchSignUpSaga(action: ActionType<typeof actions.signupUserAsy
 
 }
 
+export function* getAuthSaga(action: ActionType<typeof actions.getAuthAsync.request>) {
+    try {
+        const data = yield call(request.getAuth)
+        const option = action.payload.option
+        yield put(actions.getAuthAsync.success(data))
+        console.log('Authentication is certified')
+
+        if(!data?.isAuth){
+            if(option){
+                yield put(push('/login'))
+            }
+        }else if (!option){
+            yield put(push('/main'))
+        }
+
+    } catch (e) {
+        yield put(actions.signupUserAsync.failure())
+        console.log('Authentication is not certified')
+    }
+}
+
+
 export default function* () {
     yield all([
         takeEvery(actions.loginUserAsync.request, fetchLoginSaga),
-        takeEvery(actions.signupUserAsync.request, fetchSignUpSaga),
-
+        takeLeading(actions.signupUserAsync.request, fetchSignUpSaga),
+        takeEvery(actions.getAuthAsync.request, getAuthSaga),
     ])
 }
 

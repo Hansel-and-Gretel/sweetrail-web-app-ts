@@ -26,10 +26,22 @@ const rootReducer = combineReducers({
 
 const sagaMiddleware = createSagaMiddleware()
 
+declare global {
+    interface Window {
+        __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+    }
+}
+
+const composeEnhancer =
+    (process.env.NODE_ENV !== 'production' &&
+        window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose) ||
+    compose
 
 const index = createStore(
     rootReducer,
-    composeWithDevTools(applyMiddleware(sagaMiddleware))
+    // composeWithDevTools(applyMiddleware(...middlewares)),
+    composeEnhancer(applyMiddleware(sagaMiddleware, routerMiddleware(browserHistory))),
+    // composeWithDevTools(applyMiddleware(sagaMiddleware, routerMiddleware(browserHistory)))
 );
 
 

@@ -25,13 +25,15 @@ const S = {
         
         ${({ theme }) => theme === 'default' && css`
           background-color: ${colors.lightGray};
-          color: ${colors.orangeRed};
+          color: ${colors.black};
+          font-weight: 400;
         `}
         
         ${({ theme }) => theme === 'red' && css`
           background-color: ${colors.orangeRed};
           color: ${colors.white};
         `}
+        
 
         ${({ theme }) => theme === 'yellow' && css`
           background-color: ${colors.mustard};
@@ -39,14 +41,13 @@ const S = {
         `}
         
         &:disabled {
-            color: ${colors.gray55};
+            background-color: ${colors.lightGray};
             cursor: not-allowed;
         }
     `
 }
 
 const BasicButton = ({theme='default', disabled=false, bold = false, children, ...restProps  } : Props) => {
-
 
     return (
         <S.StyledButton theme={theme} disabled={disabled} bold={bold} {...restProps}>
