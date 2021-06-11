@@ -64,15 +64,19 @@ const RightNav = ({ open } : Props) => {
 
     return (
         <Ul open={open}>
-            <li>About Trail</li>
-            <li>Guideline</li>
-            <li>Contact Us</li>
+
             {trailToken
-                ?   <>
-                    <li onClick={() => history.push('/mypage')}>My Page</li>
+                ?<>
+                    <li>Explore</li>
+                    <li>Recommendation</li>
+                    <li>MyTrail</li>
+                    <li className='pointColor' onClick={() => history.push('/profile')}>Profile</li>
                     <li className='pointColor' onClick={logoutHandler}>Log Out</li>
-                    </>
+                </>
                 : <>
+                    <li>About Trail</li>
+                    <li>Guideline</li>
+                    <li>Contact Us</li>
                     <li onClick={() => history.push('/login')}>Log In</li>
                     <li className='pointColor' onClick={() => history.push('/signup')}>Sign Up</li>
                   </>
