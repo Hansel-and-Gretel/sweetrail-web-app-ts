@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { api, ApiResponse} from "../../lib/api"
 import {API_URL} from '../../constants/env'
-import {AuthType, LoginData, LoginResType, SignUpData, SignUpResType, UserType} from "../../types/user";
+import {AuthType, LoginData, LoginResType, LogoutResType, SignUpData, SignUpResType, UserType} from "../../types/user";
 
 
 export const loginUser = async (form: LoginData) => {
@@ -14,6 +14,14 @@ export const loginUser = async (form: LoginData) => {
     // console.log(res.headers['x_token'])
     return data
     // return res
+}
+
+export const logoutUser = async () => {
+    const data = await api.request<ApiResponse<LogoutResType>>({
+        method: 'get',
+        url: '/api/user/logout',
+    })
+    return data
 }
 
 export const signupUser = async (form: SignUpData) => {

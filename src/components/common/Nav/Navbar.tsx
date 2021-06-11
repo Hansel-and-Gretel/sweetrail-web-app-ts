@@ -2,8 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import Burger from './Burger';
 import logo from './../../../assets/logo/logo.png'
-import {useHistory} from "react-router-dom";
-
+import {Redirect, Route, useHistory} from "react-router-dom";
+import MainPage from "../../../pages/main";
+import {useCookies} from "react-cookie";
+// @ts-ignore
+import {get} from "lodash";
 
 const Nav = styled.nav`
   cursor: pointer;
@@ -30,9 +33,15 @@ const Nav = styled.nav`
 const Navbar = () => {
 
     const history = useHistory()
+    const [cookie] = useCookies(['trail-token'])
+    const trailToken = get(cookie,'trail-token')
+
     return (
         <Nav>
-            <div className="logo" onClick={() => history.push('/')}>
+            <div className="logo" onClick={() => {
+                if(trailToken) history.push('/main')
+                else history.push('/')
+            }}>
                 <img src={logo} alt="logo"/>
             </div>
             <Burger />

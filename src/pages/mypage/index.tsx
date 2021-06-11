@@ -22,17 +22,16 @@ const S = {
 
 }
 
-function MainPage() {
+function MyPage() {
     return(
         <>
             <Navbar/>
             <S.Container>
-                메인페이지
-
+                MYPAGE
             </S.Container>
         </>
 
     )
 }
 
-export default MainPage;
+export default MyPage;

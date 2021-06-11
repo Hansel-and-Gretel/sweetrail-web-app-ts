@@ -2,6 +2,12 @@ import React from 'react';
 import styled from "styled-components";
 import * as colors from './../../../styles/colors';
 import { useHistory } from "react-router-dom";
+// @ts-ignore
+import {get} from "lodash";
+import {useCookies} from "react-cookie";
+import {useDispatch} from "react-redux";
+import * as userActions from "../../../store/user/actions";
+import {deleteCookie} from "../../../lib/cookie";
 
 interface Props{
     open: boolean
@@ -45,15 +51,33 @@ const Ul = styled.ul<{open: boolean}>`
 const RightNav = ({ open } : Props) => {
 
     const history = useHistory()
+    const dispatch = useDispatch()
+    const [cookie] = useCookies(['trail-token'])
+    const trailToken = get(cookie,'trail-token')
 
+    const logoutHandler = () => {
+        /* TODO : 로그아웃 코드 */
+        deleteCookie('trail-token')
+        window.location.replace("/")
+        // dispatch(userActions.logoutUserAsync.request())
+    }
 
     return (
         <Ul open={open}>
             <li>About Trail</li>
             <li>Guideline</li>
             <li>Contact Us</li>
-            <li onClick={() => history.push('/login')}>Log In</li>
-            <li className='pointColor' onClick={() => history.push('/signup')}>Sign Up</li>
+            {trailToken
+                ?   <>
+                    <li onClick={() => history.push('/mypage')}>My Page</li>
+                    <li className='pointColor' onClick={logoutHandler}>Log Out</li>
+                    </>
+                : <>
+                    <li onClick={() => history.push('/login')}>Log In</li>
+                    <li className='pointColor' onClick={() => history.push('/signup')}>Sign Up</li>
+                  </>
+            }
+
         </Ul>
     )
 }

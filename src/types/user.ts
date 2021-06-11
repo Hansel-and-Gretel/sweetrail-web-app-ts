@@ -14,6 +14,10 @@ export interface SignUpResType {
     registerSuccess: boolean
 }
 
+export interface LogoutResType {
+    logoutSuccess: boolean
+}
+
 export interface AuthType {
     isAuth: boolean;
     userId: number;
@@ -42,6 +46,6 @@ export interface SignUpData {
     userName: string,
     email: string,
     password: string,
-    lifestyle: string,
-    journeytype: string
+    lifeStyle: string,
+    journeyType: string
 }

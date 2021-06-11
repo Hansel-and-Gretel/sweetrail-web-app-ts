@@ -98,8 +98,8 @@ function SignUpPage() {
                 userName: username,
                 email: email,
                 password: password,
-                lifestyle:  lifestyle,
-                journeytype: journeytype,
+                lifeStyle: lifestyle,
+                journeyType: journeytype,
             }
         }))
 
@@ -119,8 +119,6 @@ function SignUpPage() {
                             <TextField
                                 required
                                 label="User Name"
-                                // autoComplete="current-password"
-                                // variant="outlined"
                                 onChange={(e) => setUsername(e.target.value)}
                             />
                         </div>
@@ -128,8 +126,6 @@ function SignUpPage() {
                             <TextField
                                 required
                                 label="Email"
-                                // autoComplete="current-password"
-                                // variant="outlined"
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
@@ -138,8 +134,6 @@ function SignUpPage() {
                                 required
                                 label="Password"
                                 type="password"
-                                // autoComplete="current-password"
-                                // variant="outlined"
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
@@ -151,7 +145,7 @@ function SignUpPage() {
                                     <Select
                                         required
                                         value={lifestyle}
-                                        onChange={(e) => setLifestyle(e.target.value as string)}
+                                        onChange={(e) => {setLifestyle(e.target.value as string)}}
                                     >
                                         <MenuItem value={'None'}>
                                             <em>None</em>

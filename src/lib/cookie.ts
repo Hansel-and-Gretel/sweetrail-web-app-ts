@@ -45,6 +45,6 @@ export default function setCookie(name: string, value: string, options: any = {}
 
 // 만료 기간을 음수로 설정하면 쿠키를 삭제할 수 있습니다.
 //쿠키를 갱신하거나 삭제할 때는, 쿠키를 설정할 때 지정했던 도메인이나 경로를 사용해야 합니다.
-// function deleteCookie(name) {
-//     setCookie(name, "", {'max-age': -1})
-// }
+export function deleteCookie(name: string) {
+    setCookie(name, "", {'max-age': -1})
+}

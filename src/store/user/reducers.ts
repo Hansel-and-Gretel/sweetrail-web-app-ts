@@ -65,6 +65,21 @@ export default createReducer<UserState, Actions>(initialState)
             },
             loading: false
             }}))
+    .handleAction(actions.logoutUserAsync.request, (state) => ({...state, auth: { ...state.auth, loading: true }}))
+    .handleAction(actions.logoutUserAsync.success, (state) => ({...state, auth: {...state.auth,
+            isAuth: false,
+            isLogin: false,
+            message: '',
+            user: {
+                userId: null,
+                userName: '',
+                userImg: '',
+                journeyType: '',
+                lifeStyle: '',
+                token: '',
+            },
+            loading: false
+    }}))
     .handleAction(actions.signupUserAsync.request, (state) => ({...state, signUp: { ...state.signUp, loading: true }}))
     .handleAction(actions.signupUserAsync.success, (state, action) => ({...state, signUp: { ...state.signUp, isMember: action.payload.registerSuccess, loading: false }}))
     .handleAction(actions.getAuthAsync.request, (state) => ({...state, auth: { ...state.auth, loading: true }}))

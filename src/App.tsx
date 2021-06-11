@@ -15,7 +15,10 @@ import browserHistory from './lib/history'
 import LandingPage from './pages/landing'
 import SignUpPage from "./pages/signup";
 import LoginPage from "./pages/login";
+// @ts-ignore
+import {get} from "lodash";
 import * as userActions from "./store/user/actions";
+import MyPage from "./pages/mypage";
 
 
 
@@ -24,23 +27,26 @@ function AppRoute() {
 
     const dispatch = useDispatch()
     const [cookie] = useCookies(['trail-token'])
+    const trailToken = get(cookie,'trail-token')
 
-    // useEffect(()=>{
-    //     // API USER AUTH 가져오기
-    //     // dispatch(userActions.getAuthAsync.request())
-    //     const trailToken = get(cookie,'trail-token')
-    //     if(trailToken !== undefined){
-    //         dispatch(userActions.getAuthAsync.request({token: trailToken}))
-    //     }
-    //
-    // },[])
+    useEffect(()=>{
+        // API USER AUTH 가져오기
+        // dispatch(userActions.getAuthAsync.request())
+        const trailToken = get(cookie,'trail-token')
+        // if(trailToken !== undefined){
+        //     dispatch(userActions.getAuthAsync.request({token: trailToken}))
+        // }
+
+    },[])
 
         return (
                 <Switch>
                     <Route exact path="/" component={LandingPage}/>
-                    <Route exact path="/main" component={MainPage}/>
-                    <Route exact path="/signup" component={SignUpPage}/>
-                    <Route exact path="/login" component={LoginPage}/>
+                    {/*<Route exact path="/main" component={MainPage}/>*/}
+                    <Route exact path="/main" render={props => trailToken ? <MainPage/> : <Redirect to={{ pathname: "/"}}/> } />
+                    <Route exact path="/signup" render={props => trailToken ? <Redirect to={{ pathname: "/main"}} /> : <SignUpPage/>} />
+                    <Route exact path="/login" render={props => trailToken ? <Redirect to={{ pathname: "/main"}} /> : <LoginPage/>} />
+                    <Route exact path="/mypage" render={props => trailToken ? <MyPage/> : <Redirect to={{ pathname: "/login"}} />} />
 
                     {/*NOT FOUND*/}
                     <Route component={() => <Redirect to="/" />} />
