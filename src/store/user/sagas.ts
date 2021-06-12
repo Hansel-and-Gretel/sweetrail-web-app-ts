@@ -19,7 +19,7 @@ export function* fetchLoginSaga(action: ActionType<typeof actions.loginUserAsync
         yield put(actions.loginUserAsync.success(data))
         // token을 브라우저 쿠키에 저장하자
 
-        setCookie('trail-token', data.user.token, {
+        setCookie('x_auth', data.user.token, {
             "max-age": 60 * 60 * 24 * 60,
             expires: 1, //1일 유효기간
         })
@@ -51,7 +51,7 @@ export function* fetchLogoutSaga(action: ActionType<typeof actions.logoutUserAsy
         const data = yield call(request.logoutUser)
         yield put(actions.logoutUserAsync.success(data))
         // alert('로그아웃에 성공했습니다.')
-        deleteCookie('trail-token')
+        deleteCookie('x_auth')
         alert("로그아웃에 성공했습니다.")
         yield put(push('/'))
     } catch (e) {
@@ -63,18 +63,8 @@ export function* fetchLogoutSaga(action: ActionType<typeof actions.logoutUserAsy
 
 export function* getAuthSaga(action: ActionType<typeof actions.getAuthAsync.request>) {
     try {
-        const data = yield call(request.getAuth)
-        const option = action.payload.option
+        const data = yield call(request.getAuth, action.payload.token)
         yield put(actions.getAuthAsync.success(data))
-        console.log('Authentication is certified')
-
-        if(!data?.isAuth){
-            if(option){
-                yield put(push('/login'))
-            }
-        }else if (!option){
-            yield put(push('/main'))
-        }
 
     } catch (e) {
         yield put(actions.signupUserAsync.failure())

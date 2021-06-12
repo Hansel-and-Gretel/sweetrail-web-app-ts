@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import styled from "styled-components";
 import background from '../../assets/img/palm-tree.jpeg'
 import paris from '../../assets/img/paris.jpeg'
@@ -10,7 +10,12 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import PhotoCard from "../../components/common/Card";
 import Footer from "../../components/common/Footer";
-
+import * as userActions from "../../store/user/actions";
+import {useDispatch, useSelector} from "react-redux";
+import * as userSelector from "../../store/user/selectors";
+import {useCookies} from "react-cookie";
+// @ts-ignore
+import {get} from "lodash";
 
 
 const S = {
@@ -73,27 +78,38 @@ const S = {
 
 
 }
+const responsive = {
+    superLargeDesktop: {
+        // the naming can be any, depends on you.
+        breakpoint: { max: 4000, min: 3000 },
+        items: 5
+    },
+    desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: 4
+    },
+    tablet: {
+        breakpoint: { max: 1024, min: 464 },
+        items: 2
+    },
+    mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: 1
+    }
+};
 
 function MainPage() {
-    const responsive = {
-        superLargeDesktop: {
-            // the naming can be any, depends on you.
-            breakpoint: { max: 4000, min: 3000 },
-            items: 5
-        },
-        desktop: {
-            breakpoint: { max: 3000, min: 1024 },
-            items: 4
-        },
-        tablet: {
-            breakpoint: { max: 1024, min: 464 },
-            items: 2
-        },
-        mobile: {
-            breakpoint: { max: 464, min: 0 },
-            items: 1
-        }
-    };
+
+    const dispatch = useDispatch()
+    const getUser = useSelector(userSelector.getAuth)
+    const [cookie] = useCookies(['x_auth'])
+    const trailToken = get(cookie,'x_auth')
+
+    useEffect(()=>{
+        dispatch(userActions.getAuthAsync.request(trailToken))
+    },[])
+
+
     return(
         <>
             <Navbar/>

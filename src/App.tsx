@@ -26,13 +26,13 @@ import MyPage from "./pages/mypage";
 function AppRoute() {
 
     const dispatch = useDispatch()
-    const [cookie] = useCookies(['trail-token'])
-    const trailToken = get(cookie,'trail-token')
+    const [cookie] = useCookies(['x_auth'])
+    const trailToken = get(cookie,'x_auth')
 
     useEffect(()=>{
         // API USER AUTH 가져오기
         // dispatch(userActions.getAuthAsync.request())
-        const trailToken = get(cookie,'trail-token')
+        const trailToken = get(cookie,'x_auth')
         // if(trailToken !== undefined){
         //     dispatch(userActions.getAuthAsync.request({token: trailToken}))
         // }
@@ -46,7 +46,8 @@ function AppRoute() {
                     <Route exact path="/main" render={props => trailToken ? <MainPage/> : <Redirect to={{ pathname: "/"}}/> } />
                     <Route exact path="/signup" render={props => trailToken ? <Redirect to={{ pathname: "/main"}} /> : <SignUpPage/>} />
                     <Route exact path="/login" render={props => trailToken ? <Redirect to={{ pathname: "/main"}} /> : <LoginPage/>} />
-                    <Route exact path="/profile" render={props => trailToken ? <MyPage/> : <Redirect to={{ pathname: "/login"}} />} />
+                    <Route exact path="/mypage" render={props => trailToken ? <MyPage/> : <Redirect to={{ pathname: "/login"}} />} />
+                    {/*<Route exact path="/profile/:id" render={props => trailToken ? <MyPage/> : <Redirect to={{ pathname: "/login"}} />} />*/}
 
                     {/*NOT FOUND*/}
                     <Route component={() => <Redirect to="/" />} />

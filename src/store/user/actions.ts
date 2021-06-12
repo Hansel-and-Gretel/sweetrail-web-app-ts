@@ -24,4 +24,4 @@ export const getAuthAsync = createAsyncAction(
     "AUTH_USER_REQUEST",
     "AUTH_USER_SUCCESS",
     "AUTH_USER_FAILURE"
-)<{option: boolean}, AuthType, undefined>();
+)<{token: string}, LoginResType, undefined>();

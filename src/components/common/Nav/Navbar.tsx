@@ -33,8 +33,8 @@ const Nav = styled.nav`
 const Navbar = () => {
 
     const history = useHistory()
-    const [cookie] = useCookies(['trail-token'])
-    const trailToken = get(cookie,'trail-token')
+    const [cookie] = useCookies(['x_auth'])
+    const trailToken = get(cookie,'x_auth')
 
     return (
         <Nav>

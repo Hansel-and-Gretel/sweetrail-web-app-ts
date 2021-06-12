@@ -1,11 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from "styled-components";
 import * as colors from './../../../styles/colors';
 import { useHistory } from "react-router-dom";
 // @ts-ignore
 import {get} from "lodash";
 import {useCookies} from "react-cookie";
-import {useDispatch} from "react-redux";
+import * as userSelector from "../../../store/user/selectors";
+import {useDispatch, useSelector} from "react-redux";
 import * as userActions from "../../../store/user/actions";
 import {deleteCookie} from "../../../lib/cookie";
 
@@ -52,12 +53,13 @@ const RightNav = ({ open } : Props) => {
 
     const history = useHistory()
     const dispatch = useDispatch()
-    const [cookie] = useCookies(['trail-token'])
-    const trailToken = get(cookie,'trail-token')
+    const [cookie] = useCookies(['x_auth'])
+    const trailToken = get(cookie,'x_auth')
+    const getUser = useSelector(userSelector.getAuth)
 
     const logoutHandler = () => {
         /* TODO : 로그아웃 코드 */
-        deleteCookie('trail-token')
+        deleteCookie('x_auth')
         window.location.replace("/")
         // dispatch(userActions.logoutUserAsync.request())
     }
@@ -69,8 +71,9 @@ const RightNav = ({ open } : Props) => {
                 ?<>
                     <li>Explore</li>
                     <li>Recommendation</li>
-                    <li>MyTrail</li>
-                    <li className='pointColor' onClick={() => history.push('/profile')}>Profile</li>
+                    {/*<li>MyTrail</li>*/}
+                    {/*<li className='pointColor' onClick={() => history.push(`/profile/${getUser?.user?.userId}`)}>Profile</li>*/}
+                    <li className='pointColor' onClick={() => history.push(`/mypage`)}>My Page</li>
                     <li className='pointColor' onClick={logoutHandler}>Log Out</li>
                 </>
                 : <>

@@ -2,7 +2,9 @@ import axios from 'axios'
 import { api, ApiResponse} from "../../lib/api"
 import {API_URL} from '../../constants/env'
 import {AuthType, LoginData, LoginResType, LogoutResType, SignUpData, SignUpResType, UserType} from "../../types/user";
-
+import {useCookies} from "react-cookie";
+// @ts-ignore
+import {get} from "lodash";
 
 export const loginUser = async (form: LoginData) => {
     const data = await api.request<ApiResponse<LoginResType>>({
@@ -33,10 +35,13 @@ export const signupUser = async (form: SignUpData) => {
     return data
 }
 
-export const getAuth = async () => {
-    const { data } = await api.request<ApiResponse<AuthType>>({
+export const getAuth = async (token: string) => {
+
+    const { data } = await axios({
         method: 'get',
-        url: '/api/user/auth',
+        url: `http://localhost:5000/api/user/auth`,
+        withCredentials: true
     })
     return data
 }
+
