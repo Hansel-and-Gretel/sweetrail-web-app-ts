@@ -19,6 +19,7 @@ import LoginPage from "./pages/login";
 import {get} from "lodash";
 import * as userActions from "./store/user/actions";
 import MyPage from "./pages/mypage";
+import JourneyDetailPage from "./pages/journey";
 
 
 
@@ -47,6 +48,7 @@ function AppRoute() {
                     <Route exact path="/signup" render={props => trailToken ? <Redirect to={{ pathname: "/main"}} /> : <SignUpPage/>} />
                     <Route exact path="/login" render={props => trailToken ? <Redirect to={{ pathname: "/main"}} /> : <LoginPage/>} />
                     <Route exact path="/mypage" render={props => trailToken ? <MyPage/> : <Redirect to={{ pathname: "/login"}} />} />
+                    <Route exact path="/journey/detail/:id" component={JourneyDetailPage} />
                     {/*<Route exact path="/profile/:id" render={props => trailToken ? <MyPage/> : <Redirect to={{ pathname: "/login"}} />} />*/}
 
                     {/*NOT FOUND*/}
