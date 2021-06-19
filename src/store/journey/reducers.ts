@@ -9,10 +9,23 @@ export interface JourneyState {
         journey: Journey,
         loading: boolean
     },
-    // myJourneyList: {
-    //     data: Journey[];
-    //     loading: boolean;
-    // },
+    profileJourneyList: {
+        who: 'my' | 'other'; //내 프로필, 타인 프로필
+        data: Journey[];
+        loading: boolean;
+    },
+    mainJourneyList: {
+        data: Journey[];
+        loading: boolean;
+    },
+    styleJourneyList: {
+        data: Journey[];
+        loading: boolean;
+    },
+    accompanyJourneyList: {
+        data: Journey[];
+        loading: boolean;
+    }
 
 }
 
@@ -34,10 +47,23 @@ const initialState: JourneyState = {
         },
         loading: false
     },
-    // myJourneyList: {
-    //     data: [],
-    //     loading: false
-    // }
+    profileJourneyList: {
+        who: 'my',
+        data: [],
+        loading: false
+    },
+    mainJourneyList: {
+        data: [],
+        loading: false
+    },
+    styleJourneyList: {
+        data: [],
+        loading: false
+    },
+    accompanyJourneyList: {
+        data: [],
+        loading: false
+    }
 }
 
 export default createReducer<JourneyState, Actions>(initialState)

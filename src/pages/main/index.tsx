@@ -1,21 +1,27 @@
 import React, {useEffect} from 'react'
-import styled from "styled-components";
+import styled from "styled-components"
+
+import {useDispatch, useSelector} from "react-redux";
+import * as userActions from "../../store/user/actions";
+import * as journeyActions from "../../store/journey/actions";
+import * as userSelector from "../../store/user/selectors";
+import * as journeySelector from "../../store/journey/selectors";
+
 import background from '../../assets/img/palm-tree.jpeg'
 import paris from '../../assets/img/paris.jpeg'
 import paris2 from '../../assets/img/paris2.jpeg'
 import Navbar from "../../components/common/Nav/Navbar";
 import InputBox from "../../components/common/Input";
-
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import PhotoCard from "../../components/common/Card";
 import Footer from "../../components/common/Footer";
-import * as userActions from "../../store/user/actions";
-import {useDispatch, useSelector} from "react-redux";
-import * as userSelector from "../../store/user/selectors";
+
 import {useCookies} from "react-cookie";
 // @ts-ignore
 import {get} from "lodash";
+
+
 
 
 const S = {
@@ -107,6 +113,7 @@ function MainPage() {
 
     useEffect(()=>{
         dispatch(userActions.getAuthAsync.request(trailToken))
+        // dispatch(journeyActions.fetchMainJourneyListAsync.request())
     },[])
 
 
