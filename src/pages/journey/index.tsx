@@ -177,6 +177,7 @@ function JourneyDetailPage() {
     const params = useParams<{ id: string }>()
 
     useEffect(()=> {
+        window.scrollTo(0, 0)
         dispatch(journeyActions.getJourneyDetailAsync.request({id: parseInt(params.id)}))
     },[])
 

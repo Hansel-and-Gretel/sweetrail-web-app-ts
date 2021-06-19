@@ -24,9 +24,9 @@ interface Props {
 const Chip = ({color, children, ...restProps} : Props) => {
 
     return (
-        <>
+        <div {...restProps}>
             <S.Chip color={color}>{children}</S.Chip>
-        </>
+        </div>
 
     )
 }

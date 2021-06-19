@@ -1,20 +1,26 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled, {css} from "styled-components";
+import {useCookies} from "react-cookie";
+import {useDispatch, useSelector} from "react-redux";
+
+import * as userSelector from "../../store/user/selectors";
+import * as userActions from "../../store/user/actions";
+import * as journeyActions from "../../store/journey/actions";
+import * as journeySelector from "../../store/journey/selectors";
+
+import Carousel from "react-multi-carousel";
 import Navbar from "../../components/common/Nav/Navbar";
 import Footer from "../../components/common/Footer";
-import {useDispatch, useSelector} from "react-redux";
-import * as userSelector from "../../store/user/selectors";
-import {useCookies} from "react-cookie";
-import * as userActions from "../../store/user/actions";
-// @ts-ignore
-import {get} from "lodash";
 import Chip from "../../components/common/Chip";
 import BasicButton from "../../components/common/Button";
-import Carousel from "react-multi-carousel";
 import PhotoCard from "../../components/common/Card";
 import paris from "../../assets/img/paris.jpeg";
-import paris2 from "../../assets/img/paris2.jpeg";
+
 import {deleteCookie} from "../../lib/cookie";
+// @ts-ignore
+import {get} from "lodash";
+import {useHistory} from "react-router-dom";
+
 
 const responsive = {
     superLargeDesktop: {
@@ -97,6 +103,9 @@ const S = {
       p {
         margin-bottom: 0;
       }
+      div{
+        display: inline;
+      }
 
       @media (min-width: 768px) {
         margin: 16px 0 0 10px;
@@ -153,12 +162,25 @@ function MyPage() {
 
     const dispatch = useDispatch()
     const getUser = useSelector(userSelector.getAuth)
+    const history = useHistory()
+
+    const [userId, setUserId] = useState(0)
+    const getMyJourneyList = useSelector(journeySelector.getProfileJourneyList)
+
     const [cookie] = useCookies(['x_auth'])
     const trailToken = get(cookie,'x_auth')
 
     useEffect(()=>{
         dispatch(userActions.getAuthAsync.request(trailToken))
     },[])
+
+    useEffect(()=>{
+        setUserId(getUser.user.userId)
+    },[getUser])
+
+    useEffect(()=>{
+        dispatch(journeyActions.fetchMyJourneyListAsync.request({id: userId.toString()}))
+    },[userId])
 
     const logoutHandler = () => {
         /* TODO : 로그아웃 코드 */
@@ -172,13 +194,14 @@ function MyPage() {
             <Navbar/>
             <S.Container>
                 <S.Background/>
-
                 <S.UserContainer>
                     <S.ProfileCircle photo={getUser.user.userImg}/>
                     <S.InfoContainer>
                         <p>{getUser.user.userName}</p>
-                        <Chip color={"pink"}>{getUser.user.lifeStyle}</Chip>
-                        <Chip color={"orange"}>{getUser.user.journeyType}</Chip>
+                        <div>
+                            <Chip color={"pink"}>{getUser.user.lifeStyle}</Chip>
+                            <Chip color={"orange"}>{getUser.user.journeyType}</Chip>
+                        </div>
                     </S.InfoContainer>
                 </S.UserContainer>
                 <S.Public>
@@ -188,18 +211,19 @@ function MyPage() {
                         itemClass="image-item"
                         removeArrowOnDeviceType={["tablet", "mobile"]}
                     >
-                        <div>
-                            <PhotoCard img={paris} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
+                        {
+                            getMyJourneyList.data?.map((journey, index)=>{
+                                if(journey.sharedFlag){
+                                    return(
+                                        <div onClick={() => history.push(`/journey/detail/${journey.id}`)}>
+                                            <PhotoCard img={journey.image} title={journey.journeyName} type={journey.type} accompany={journey.accompany}/>
+                                        </div>
+                                    )
+                                }else{
+                                    <></>
+                                }
+                            })
+                        }
                     </Carousel>
                 </S.Public>
                 <S.Private>
@@ -209,24 +233,19 @@ function MyPage() {
                         itemClass="image-item"
                         removeArrowOnDeviceType={["tablet", "mobile"]}
                     >
-                        <div>
-                            <PhotoCard img={paris} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
+                        {
+                            getMyJourneyList.data?.map((journey, index)=>{
+                                if(!journey.sharedFlag){
+                                    return(
+                                        <div onClick={() => history.push(`/journey/detail/${journey.id}`)}>
+                                            <PhotoCard img={journey.image} title={journey.journeyName} type={journey.type} accompany={journey.accompany}/>
+                                        </div>
+                                    )
+                                }else{
+                                    <></>
+                                }
+                            })
+                        }
                     </Carousel>
                 </S.Private>
                 <S.Scrapped>
@@ -237,17 +256,11 @@ function MyPage() {
                         removeArrowOnDeviceType={["tablet", "mobile"]}
                     >
                         <div>
-                            <PhotoCard img={paris} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
+                            아직 준비 되지 않았어요!
                         </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
+                        {/*<div>*/}
+                        {/*    <PhotoCard img={paris} title={'파리'} type={'행복'} accompany={'친구'}/>*/}
+                        {/*</div>*/}
                     </Carousel>
                 </S.Scrapped>
                 <S.ButtonGroup>

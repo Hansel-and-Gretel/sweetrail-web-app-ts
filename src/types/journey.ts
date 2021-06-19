@@ -1,7 +1,8 @@
 export interface Journey {
+    id: number;
     journeyName: string;
     type: string;
-    accompany: string;
+    accompany: string | null | '친구' | 'alone' | 'family' | 'friends' | 'random' ;
     pinFrequency: number;
     summary: string;
     image: string | '/image/journey/default.png';
@@ -12,3 +13,4 @@ export interface Journey {
     createdAt: string;
     updatedAt: string;
 }
+

@@ -32,6 +32,7 @@ export interface JourneyState {
 const initialState: JourneyState = {
     journeyDetail: {
         journey: {
+            id: 0,
             journeyName: '',
             type: '',
             accompany: '',
@@ -70,6 +71,7 @@ export default createReducer<JourneyState, Actions>(initialState)
     .handleAction(actions.getJourneyDetailAsync.request, (state) => ({...state, journeyDetail: { ...state.journeyDetail,}}))
     .handleAction(actions.getJourneyDetailAsync.success, (state, action) => ({...state, journeyDetail: {
             journey: {
+                id: action.payload.id,
                 journeyName: action.payload.journeyName,
                 type: action.payload.type,
                 accompany: action.payload.accompany,

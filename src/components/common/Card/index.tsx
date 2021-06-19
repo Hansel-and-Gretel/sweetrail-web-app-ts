@@ -2,12 +2,17 @@ import React from 'react'
 import styled, { css } from 'styled-components'
 
 import * as colors from '../../../../src/styles/colors'
+import Chip from "../Chip"
+import {lightGreen} from "@material-ui/core/colors";
 
 interface Props extends React.HTMLAttributes<HTMLButtonElement> {
     img: string,
     title: string,
-    lifestyle: string,
-    journeyType: string
+    // lifestyle?: string | null,
+    // journeyType?: string | null,
+    type?: string | null,
+    accompany?: string | null | '친구' | 'alone' | 'family' | 'friends' | 'random' ;
+    isPublic?: 0 | 1 //0: private, 1: public
 }
 
 const S = {
@@ -24,9 +29,17 @@ const S = {
 
       h1 {
         padding: 80px 0 0 10px;
-        font-size: 20px;
+        font-size: 22px;
         font-weight: 800;
         color: white;
+      }
+      
+      div{
+        display: inline;
+        margin-left: 3px;
+      }
+      .first{
+        margin-left: 10px;
       }
 
       @media (min-width: 768px) {
@@ -45,19 +58,30 @@ const S = {
           font-weight: 800;
           color: white;
         }
+        div{
+          display: inline;
+          margin-left: 3px;
+        }
+        .first{
+          margin-left: 10px;
+        }
       }
       
 
     `
 }
 
-const PhotoCard = ({img, title, lifestyle, journeyType, children, ...restProps  } : Props) => {
+const PhotoCard = ({img, title, type, accompany, isPublic, children, ...restProps  } : Props) => {
 
     return (
         <S.PhotoCard img={img} >
             <h1>{title}</h1>
-            {lifestyle}
-            {journeyType}
+            <div className={'first'}>
+                <Chip color={"orange"}>{type}</Chip>
+            </div>
+            <div>
+                <Chip color={"pink"}>{accompany}</Chip>
+            </div>
             {children}
         </S.PhotoCard>
     )
