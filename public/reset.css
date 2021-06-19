@@ -2,7 +2,11 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-@import '~antd/dist/antd.css';
+@font-face{font-family:'NanumBarunpen';font-weight:normal;src:local(NanumBarunpen);src:url("src/styles/fonts/NanumBarunpenR.eot");src:url("src/styles/fonts/NanumBarunpenR.woff") format("woff"), url("src/styles/fonts/NanumBarunpenR.woff2") format("woff2")}
+@font-face{font-family:'NanumBarunpen';font-weight:bold;src:local(NanumBarunpen);src:url("src/styles/fonts/NanumBarunpenB.eot");src:url("src/styles/fonts/NanumBarunpenB.woff") format("woff"), url("src/styles/fonts/NanumBarunpenB.woff2") format("woff2")}
+
+
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -31,6 +35,7 @@ footer, header, hgroup, menu, nav, section {
 body {
     line-height: 1;
 }
+
 ol, ul {
     list-style: none;
 }
