@@ -113,8 +113,14 @@ function MainPage() {
 
     useEffect(()=>{
         dispatch(userActions.getAuthAsync.request(trailToken))
-        // dispatch(journeyActions.fetchMainJourneyListAsync.request())
+        dispatch(journeyActions.fetchMainJourneyListAsync.request())
     },[])
+
+    // useEffect(() => {
+    //     if(getUser){
+    //         dispatch(journeyActions.fetchMainJourneyListAsync.request())
+    //     }
+    // },[getUser])
 
 
     return(

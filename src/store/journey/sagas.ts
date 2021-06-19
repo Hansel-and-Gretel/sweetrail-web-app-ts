@@ -37,7 +37,6 @@ export function* fetchMainJourneyListSaga(action: ActionType<typeof actions.fetc
     try {
         const data = yield call(request.getMainJourneyList)
         yield put(actions.fetchMainJourneyListAsync.success(data))
-        console.log(data)
     } catch (e) {
         yield put(actions.fetchMainJourneyListAsync.failure())
     }
