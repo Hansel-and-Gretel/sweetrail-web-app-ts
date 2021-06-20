@@ -8,7 +8,6 @@ export function* getPlaceByJourneySaga(action: ActionType<typeof actions.getPlac
     try {
         const data = yield call(request.getPlaceListByJourney, action.payload.id)
         yield put(actions.getPlaceByJourneyAsync.success(data))
-        console.log(data)
     } catch (e) {
         yield put(actions.getPlaceByJourneyAsync.failure())
     }
@@ -18,7 +17,6 @@ export function* getAllPlaceSaga(action: ActionType<typeof actions.getAllPlaceAs
     try {
         const data = yield call(request.getAllPlaceList)
         yield put(actions.getAllPlaceAsync.success(data))
-        console.log(data)
     } catch (e) {
         yield put(actions.getAllPlaceAsync.failure())
     }

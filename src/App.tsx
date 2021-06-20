@@ -51,7 +51,7 @@ function AppRoute() {
                     <Route exact path="/login" render={props => trailToken ? <Redirect to={{ pathname: "/main"}} /> : <LoginPage/>} />
                     <Route exact path="/mypage" render={props => trailToken ? <MyPage/> : <Redirect to={{ pathname: "/login"}} />} />
                     <Route exact path="/journey/detail/:id" component={JourneyDetailPage} />
-                    <Route exact path="/map" component={MapPage} />
+                    <Route exact path="/map/:id" component={MapPage} />
                     {/*<Route exact path="/profile/:id" render={props => trailToken ? <MyPage/> : <Redirect to={{ pathname: "/login"}} />} />*/}
 
                     {/*NOT FOUND*/}

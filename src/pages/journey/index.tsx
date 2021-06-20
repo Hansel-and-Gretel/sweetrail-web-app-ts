@@ -1,17 +1,20 @@
 import React, {useEffect, useState} from 'react'
 import styled from "styled-components";
-import { useParams} from 'react-router-dom'
-import Navbar from "../../components/common/Nav/Navbar";
-import * as colors from './../../../src/styles/colors';
+import {useHistory, useParams} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
 
 import * as journeySelector from "../../store/journey/selectors";
+import * as placeSelector from "../../store/place/selectors";
 import * as journeyActions from "../../store/journey/actions";
+import * as placeActions from "../../store/place/actions";
+
 import Chip from "../../components/common/Chip";
 import Scrollbars from "react-custom-scrollbars-2";
 import html2canvas from 'html2canvas';
 import BasicButton from "../../components/common/Button";
-import {yellow} from "@material-ui/core/colors";
+import Navbar from "../../components/common/Nav/Navbar";
+import * as colors from './../../../src/styles/colors';
+import PhotoCard from "../../components/common/Card";
 
 
 
@@ -132,7 +135,7 @@ const S = {
           font-size: 1rem;
           font-weight: bold;
           padding: 10px;
-          background-color: beige;
+          background-color: white;
           border-radius: 10px;
         }
       }
@@ -174,11 +177,15 @@ function JourneyDetailPage() {
 
     const dispatch = useDispatch()
     const getJourney = useSelector(journeySelector.getJourneyDetail)
+    const getPlaces = useSelector(placeSelector.getPlaceByJourney)
+
     const params = useParams<{ id: string }>()
+    const history = useHistory()
 
     useEffect(()=> {
         window.scrollTo(0, 0)
         dispatch(journeyActions.getJourneyDetailAsync.request({id: parseInt(params.id)}))
+        dispatch(placeActions.getPlaceByJourneyAsync.request({id: parseInt(params.id)}))
     },[])
 
     return(
@@ -204,29 +211,26 @@ function JourneyDetailPage() {
                         <img src={getJourney.image} alt="photo"/>
                         <p>{getJourney.summary}</p>
                     </S.PostContainer>
+
                     <S.MapContainer>
                         <h3>Places</h3>
                         <div>
                             <Scrollbars
                                 style={{ height: 500}}>
-                                <p>인천공항</p>
-                                <p>히드로공항</p>
-                                <p>타워브릿지</p>
-                                <p>캠든마켓</p>
-                                <p>캠든마켓</p>
-                                <p>인천공항</p>
-                                <p>히드로공항</p>
-                                <p>타워브릿지</p>
-                                <p>캠든마켓</p>
-                                <p>캠든마켓</p>
+                                {
+                                    getPlaces.placeList?.map((place,index)=>{
+                                        return(
+                                            <p>Place {index+1}: {place.placeName}</p>
+                                        )
+                                    })
+                                }
                             </Scrollbars>
                         </div>
-                        <BasicButton theme={'default'} style={{fontWeight: 'bold'}} onClick={()=>alert('지도')}>On Map</BasicButton>
+                        <BasicButton theme={'default'} style={{fontWeight: 'bold'}} onClick={()=>history.push(`/map/${getJourney.id}`)}>On Map</BasicButton>
                     </S.MapContainer>
                 </S.Content>
                 <BasicButton theme={'yellow'} style={{width: '30%', margin: '50px auto', fontWeight: 'bold'}} onClick={(e) => copyDOM(getJourney.userName)}>Download Trail-Card</BasicButton>
             </S.Container>
-
         </>
 
     )
