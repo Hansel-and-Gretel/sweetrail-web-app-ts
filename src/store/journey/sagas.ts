@@ -52,9 +52,9 @@ export function* fetchStyleJourneyListSaga(action: ActionType<typeof actions.fet
     }
 }
 
-export function* fetchAccompanyJourneyListSaga(action: ActionType<typeof actions.fetchStyleJourneyListAsync.request>) {
+export function* fetchAccompanyJourneyListSaga(action: ActionType<typeof actions.fetchAccompanyJourneyListAsync.request>) {
     try {
-        const data = yield call(request.getAccompanyJourneyList, action.payload.type)
+        const data = yield call(request.getAccompanyJourneyList, action.payload.accompany)
         yield put(actions.fetchAccompanyJourneyListAsync.success(data))
     } catch (e) {
         yield put(actions.fetchAccompanyJourneyListAsync.failure())
@@ -69,7 +69,7 @@ export default function* () {
         takeEvery(actions.fetchOtherJourneyListAsync.request, fetchOtherJourneyListSaga),
         takeEvery(actions.fetchMainJourneyListAsync.request, fetchMainJourneyListSaga),
         takeEvery(actions.fetchStyleJourneyListAsync.request, fetchStyleJourneyListSaga),
-
+        takeEvery(actions.fetchAccompanyJourneyListAsync.request, fetchAccompanyJourneyListSaga)
     ])
 }
 

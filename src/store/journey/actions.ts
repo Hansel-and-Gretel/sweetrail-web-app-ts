@@ -43,10 +43,3 @@ export const fetchAccompanyJourneyListAsync = createAsyncAction(
     "FETCH_AMP_JOURNEY_LIST_FAILURE"
 )<{accompany: string}, Journey[], undefined>();
 
-// export const uploadJourneyAsync = createAsyncAction(
-//     "UPLOAD_JOURNEY_REQUEST",
-//     "UPLOAD_JOURNEY_RESPONSE",
-//     "UPLOAD_JOURNEY_FAILURE"
-// )<{formdata : undefined}, Journey, undefined>();
-
-
