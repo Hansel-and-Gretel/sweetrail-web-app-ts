@@ -1,7 +1,7 @@
 export interface Place {
     id: number;
     placeName: string | number;
-    time: string;
+    pinTime: string;
     longitude: string;
     latitude: string;
     image: string;
@@ -10,5 +10,7 @@ export interface Place {
     status: number;
     journeysId: number;
     userId: number;
-    userName: string
+    userName: string;
+    createdAt: string;
+    updatedAt: string;
 }

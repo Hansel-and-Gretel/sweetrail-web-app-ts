@@ -6,22 +6,24 @@ import browserHistory from '../lib/history'
 
 import JourneyService, { JourneyState } from './journey/reducers'
 import UserService, { UserState } from './user/reducers'
+import PlaceService, { PlaceState } from './place/reducers'
 import JourneySaga from './journey/sagas'
 import UserSaga from './user/sagas'
+import PlaceSaga from './place/sagas'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 export interface RootState {
     router: RouterState,
     journeyState: JourneyState,
-    userState: UserState
-
+    userState: UserState,
+    placeState: PlaceState
 }
 
 const rootReducer = combineReducers({
     router: connectRouter(browserHistory),
     journeyState: JourneyService,
-    userState: UserService
-
+    userState: UserService,
+    placeState: PlaceService
 })
 
 const sagaMiddleware = createSagaMiddleware()
@@ -48,7 +50,8 @@ const index = createStore(
 function* rootSaga() {
     yield all([
         JourneySaga(),
-        UserSaga()
+        UserSaga(),
+        PlaceSaga()
     ])
 }
 sagaMiddleware.run(rootSaga)
