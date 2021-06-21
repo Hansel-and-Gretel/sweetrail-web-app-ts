@@ -20,7 +20,6 @@ import {get} from "lodash";
 import * as userActions from "./store/user/actions";
 import MyPage from "./pages/mypage";
 import JourneyDetailPage from "./pages/journey";
-import MapComp from "./pages/map/map";
 import MapPage from "./pages/map";
 
 

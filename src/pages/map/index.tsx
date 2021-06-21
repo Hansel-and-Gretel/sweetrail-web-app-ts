@@ -6,26 +6,64 @@ import * as placeSelector from "../../store/place/selectors";
 import * as journeyActions from "../../store/journey/actions";
 import * as placeActions from "../../store/place/actions";
 
-import MapComp from "./map";
 import Navbar from "../../components/common/Nav/Navbar";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory, useParams} from "react-router-dom";
+import GoogleMap from "./map";
+import GoogleMapReact from "google-map-react";
+// import {GOOGLE_MAP_KEY} from "../../constants/env";
+import Marker from "./marker";
 
-const KakaoMap = styled.div`
-  width: 100%;
-  height: 100%;
-`
+
+interface mapProps {
+    id: number
+}
+
+
+const defaultPosition = {
+    center: {
+        lat: 37.5408,
+        lng: 127.0793
+    },
+    zoom: 13
+};
 
 const S = {
     Container: styled.div`
         display: flex;
+        flex-direction: column;
+        
+        padding: 10px;
+        @media (min-width: 1200px) {
+          flex-direction: row;
+          padding: 40px;
+        }
     `,
     MapContainer: styled.div`
-      text-align: right;
-      width: 50vw;
-      height: 100vh;
+      width: 90vw;
+      height: 70%;
+      margin: 0 auto;
+      
+      .map{
+        width: 100%;
+        height: 70vh;
+      }
+
+      @media (min-width: 1200px) {
+        margin: 0;
+        width: 50vw;
+      }
+      
     `,
     ContentContainer: styled.div`
+        width: 90vw;
+        height: 70%;
+        padding: 40px;
+        @media (min-width: 1200px) {
+            margin: 0;
+            flex-direction: row;
+            width: 50vw;
+        }
     `
 }
 
@@ -40,6 +78,7 @@ function MapPage() {
 
     const params = useParams<{ id: string }>()
     const history = useHistory()
+    const [selected, setSelected] = useState(1)
 
 
     useEffect(()=> {
@@ -49,53 +88,43 @@ function MapPage() {
     },[])
 
 
-    useEffect(() => {
-        mapscript()
-    }, [dispatch])
-
-    const mapscript = () => {
-        console.log(getPlaces.placeList)
-        /** 지도 생성하기 **/
-        const container = document.getElementById('kakaoMap');
-        const options = {
-            // center: new kakao.maps.LatLng(DEFAULT_LONGITUDE, DEFAULT_LATITUDE),
-            center: new kakao.maps.LatLng(33.450701, 126.570667),
-            level: 5
-        };
-        const map = new kakao.maps.Map(container, options);
-
-        /** 컨드롤 생성 **/
-        let mapTypeControl = new kakao.maps.MapTypeControl();
-        map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
-        let zoomControl = new kakao.maps.ZoomControl();
-        map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-
-        /** 마커 찍기 **/
-        const imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-        let imageSize = new kakao.maps.Size(24, 35);
-        let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-        getPlaces.placeList?.forEach((el)=>{
-            new kakao.maps.Marker({
-                map: map, // 마커를 표시할 지도
-                position: new kakao.maps.LatLng(el.latitude, el.longitude), // 마커를 표시할 위치
-                title : el.placeName, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-                // image : markerImage // 마커 이미지
-            })
-        })
-
-    }
-
     return(
         <>
             <Navbar/>
             <S.Container>
                 <S.MapContainer>
-                    {/*{<MapComp places={getPlaces.placeList}/>}*/}
-                    <KakaoMap id='kakaoMap'/>
+                    {/*<GoogleMap id={parseInt(params.id)}/>*/}
+                        <div className={'map'}>
+                            <GoogleMapReact
+                                // @ts-ignore
+                                bootstrapURLKeys={{key: GOOGLE_MAP_KEY }}
+                                defaultCenter={defaultPosition.center}
+                                defaultZoom={defaultPosition.zoom}
+                                onChildClick={(childProps)=>setSelected(childProps)}
+                            >
+                                {getPlaces.placeList?.map((place, key) => (
+                                    <Marker
+                                        key={key}
+                                        lat={parseFloat(place.latitude)}
+                                        lng={parseFloat(place.longitude)}
+                                        show={key!==selected}
+                                        text={(place.id).toString()}
+                                        place={place}
+                                    />
+                                ))}
+                            </GoogleMapReact>
+                        </div>
                 </S.MapContainer>
                 <S.ContentContainer>
-                    hello
+                    {
+                        getPlaces.placeList[selected] && <>
+                            <h1>{getPlaces.placeList[selected].id}번째 장소 : {getPlaces.placeList[selected].placeName}</h1>
+                            <p>{getPlaces.placeList[selected].createdAt}</p>
+                            <p>{getPlaces.placeList[selected].note}</p>
+                            <img src={getPlaces.placeList[selected]?.image} alt="장소사진"/>
+                        </>
+                    }
+
                 </S.ContentContainer>
             </S.Container>
         </>
