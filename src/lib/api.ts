@@ -19,7 +19,7 @@ export class ApiError extends Error {
 }
 
 export const api = axios.create({
-    baseURL: 'http://localhost:5000'
+    baseURL: 'http://ec2-3-22-119-236.us-east-2.compute.amazonaws.com:5000'
 })
 
 api.interceptors.response.use((response) => {
