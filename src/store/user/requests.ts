@@ -39,7 +39,7 @@ export const getAuth = async (token: string) => {
 
     const { data } = await axios({
         method: 'get',
-        url: `http://localhost:5000/api/user/auth`,
+        url: `http://ec2-3-22-119-236.us-east-2.compute.amazonaws.com:5000/api/user/auth`,
         withCredentials: true
     })
     return data
