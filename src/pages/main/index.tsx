@@ -1,21 +1,28 @@
-import React, {useEffect} from 'react'
-import styled from "styled-components";
+import React, {useEffect, useState} from 'react'
+import styled from "styled-components"
+
+import {useDispatch, useSelector} from "react-redux";
+import * as userActions from "../../store/user/actions";
+import * as journeyActions from "../../store/journey/actions";
+import * as userSelector from "../../store/user/selectors";
+import * as journeySelector from "../../store/journey/selectors";
+
 import background from '../../assets/img/palm-tree.jpeg'
 import paris from '../../assets/img/paris.jpeg'
 import paris2 from '../../assets/img/paris2.jpeg'
 import Navbar from "../../components/common/Nav/Navbar";
 import InputBox from "../../components/common/Input";
-
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import PhotoCard from "../../components/common/Card";
 import Footer from "../../components/common/Footer";
-import * as userActions from "../../store/user/actions";
-import {useDispatch, useSelector} from "react-redux";
-import * as userSelector from "../../store/user/selectors";
+
 import {useCookies} from "react-cookie";
 // @ts-ignore
 import {get} from "lodash";
+import {useHistory} from "react-router-dom";
+
+
 
 
 const S = {
@@ -101,14 +108,39 @@ const responsive = {
 function MainPage() {
 
     const dispatch = useDispatch()
+    const history = useHistory()
     const getUser = useSelector(userSelector.getAuth)
+    const getStyleJourneyList = useSelector(journeySelector.getStyleJourneyList)
+    const getMyJourneyList = useSelector(journeySelector.getProfileJourneyList)
+    const getMainJourneyList = useSelector(journeySelector.getMainJourneyList)
+
+    const [user, setUser] = useState(0)
+    const [journeyType, setJourneyType] = useState('')
+    const [lifeStyle, setLifeStyle] = useState('')
     const [cookie] = useCookies(['x_auth'])
     const trailToken = get(cookie,'x_auth')
 
     useEffect(()=>{
         dispatch(userActions.getAuthAsync.request(trailToken))
+        dispatch(journeyActions.fetchMainJourneyListAsync.request())
     },[])
 
+    useEffect(()=>{
+        setJourneyType(getUser.user.journeyType)
+        setUser(getUser.user.userId)
+    },[getUser])
+
+    useEffect(() => {
+        if(journeyType){
+            dispatch(journeyActions.fetchStyleJourneyListAsync.request({type: getUser.user.journeyType}))
+        }
+        if(user){
+            dispatch(journeyActions.fetchMyJourneyListAsync.request({id: user.toString()}))
+        }
+        if(lifeStyle){
+            dispatch(journeyActions.fetchStyleJourneyListAsync.request({type: lifeStyle}))
+        }
+    },[journeyType, user])
 
     return(
         <>
@@ -130,57 +162,33 @@ function MainPage() {
                         itemClass="image-item"
                         removeArrowOnDeviceType={["tablet", "mobile"]}
                     >
-                        <div>
-                            <PhotoCard img={paris} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
+                        {
+                            getMyJourneyList.data?.map((journey, index)=>{
+                                return(
+                                    <div onClick={() => history.push(`/journey/detail/${journey.id}`)}>
+                                        <PhotoCard img={journey.image} title={journey.journeyName} type={journey.type} accompany={journey.accompany}/>
+                                    </div>
+                                )
+                            })
+                        }
                     </Carousel>
                 </S.FirstContainer>
                 <S.FirstContainer>
-                    <h3>Styles</h3>
+                    <h3><h5>Based on Your Journey Type</h5>{journeyType}</h3>
                     <Carousel
                         responsive={responsive}
                         itemClass="image-item"
                         removeArrowOnDeviceType={["tablet", "mobile"]}
                     >
-                        <div>
-                            <PhotoCard img={paris} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
+                        {
+                            getStyleJourneyList.data?.map((journey, index)=>{
+                                return(
+                                    <div onClick={() => history.push(`/journey/detail/${journey.id}`)}>
+                                        <PhotoCard img={journey.image} title={journey.journeyName} type={journey.type} accompany={journey.accompany}/>
+                                    </div>
+                                )
+                            })
+                        }
                     </Carousel>
                 </S.FirstContainer>
                 <S.FirstContainer>
@@ -190,27 +198,15 @@ function MainPage() {
                         itemClass="image-item"
                         removeArrowOnDeviceType={["tablet", "mobile"]}
                     >
-                        <div>
-                            <PhotoCard img={paris} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
-                        <div>
-                            <PhotoCard img={paris2} title={'파리'} lifestyle={'행복'} journeyType={'자유'}/>
-                        </div>
+                        {
+                            getMainJourneyList.data?.map((journey, index)=>{
+                                return(
+                                    <div onClick={() => history.push(`/journey/detail/${journey.id}`)}>
+                                        <PhotoCard img={journey.image} title={journey.journeyName} type={journey.type} accompany={journey.accompany}/>
+                                    </div>
+                                )
+                            })
+                        }
                     </Carousel>
                 </S.FirstContainer>
 

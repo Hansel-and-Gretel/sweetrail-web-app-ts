@@ -10,7 +10,7 @@ export interface UserState {
         isLogin: boolean;
         message: string;
         user: {
-            userId: number | null;
+            userId: number;
             userName: string;
             userImg: string;
             journeyType: string;
@@ -32,7 +32,7 @@ const initialState: UserState = {
         isLogin: false,
         message: '',
         user: {
-            userId: null,
+            userId: 0,
             userName: '',
             userImg: '',
             journeyType: '',
@@ -71,7 +71,7 @@ export default createReducer<UserState, Actions>(initialState)
             isLogin: false,
             message: '',
             user: {
-                userId: null,
+                userId: 0,
                 userName: '',
                 userImg: '',
                 journeyType: '',
