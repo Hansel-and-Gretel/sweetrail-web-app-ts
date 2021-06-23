@@ -156,6 +156,12 @@ const S = {
         padding: 0 200px;
       }
     `,
+    EmptyMessage: styled.div`
+        color: gray;
+        font-size: 1rem;
+        text-align: center;
+        padding: 30px 0;
+    `
 
 }
 
@@ -193,7 +199,7 @@ function Profile() {
                 </S.UserContainer>
                 <S.Public>
                     <h4>{getUser.userName}'s Journey</h4>
-                    {getJourenyLsit.data.length < 1 && <> 기록된 여정이없습니다.</>}
+                    <S.EmptyMessage>{getJourenyLsit.data.length < 1 && <> 기록된 여정이없습니다.</>}</S.EmptyMessage>
                     <Carousel
                         responsive={responsive}
                         itemClass="image-item"

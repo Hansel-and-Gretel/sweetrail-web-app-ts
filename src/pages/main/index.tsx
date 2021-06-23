@@ -81,6 +81,12 @@ const S = {
         padding: 50px
       }
     `,
+    EmptyMessage: styled.div`
+        color: gray;
+        font-size: 1rem;
+        text-align: center;
+      padding: 30px 0;
+    `
 
 
 
@@ -157,6 +163,7 @@ function MainPage() {
                 </S.TopContainer>
                 <S.FirstContainer>
                     <h3>Your Trail</h3>
+                    <S.EmptyMessage>{getStyleJourneyList.data.length < 1  && <>아직 등록된 나의 Trail이 없습니다.</>}</S.EmptyMessage>
                     <Carousel
                         responsive={responsive}
                         itemClass="image-item"
@@ -174,7 +181,8 @@ function MainPage() {
                     </Carousel>
                 </S.FirstContainer>
                 <S.FirstContainer>
-                    <h3><p>Based on Your Journey Type</p>{journeyType}</h3>
+                    <h3>Your Taste : {journeyType}</h3>
+                    <S.EmptyMessage>{getStyleJourneyList.data.length < 1 && <>나의 취향에 맞는 여정을 발견하지 못했습니다.</>}</S.EmptyMessage>
                     <Carousel
                         responsive={responsive}
                         itemClass="image-item"

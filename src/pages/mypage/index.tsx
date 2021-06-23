@@ -119,7 +119,7 @@ const S = {
     `
     ,
     ButtonGroup: styled.div`
-        margin: 50px 0;
+        margin: 100px 0 50px; 
     `,
     ButtonContainer: styled.div`
         width: 30%;
@@ -155,6 +155,12 @@ const S = {
         padding: 0 200px;
       }
     `,
+    EmptyMessage: styled.div`
+        color: gray;
+        font-size: 1rem;
+        text-align: center;
+        padding: 30px 0;
+    `
 
 }
 
@@ -206,6 +212,7 @@ function MyPage() {
                 </S.UserContainer>
                 <S.Public>
                     <h4>Public</h4>
+                    <S.EmptyMessage>{getMyJourneyList.data.length < 1 && <>아직 등록된 여정이 없습니다.</>}</S.EmptyMessage>
                     <Carousel
                         responsive={responsive}
                         itemClass="image-item"
@@ -229,6 +236,7 @@ function MyPage() {
 
                 <S.Private>
                     <h4>Private</h4>
+                    <S.EmptyMessage>{getMyJourneyList.data.length < 1 && <>아직 등록된 여정이 없습니다.</>}</S.EmptyMessage>
                     <Carousel
                         responsive={responsive}
                         itemClass="image-item"
@@ -251,25 +259,19 @@ function MyPage() {
                 </S.Private>
                 <S.Scrapped>
                     <h4>Scrapped</h4>
-                    <Carousel
-                        responsive={responsive}
-                        itemClass="image-item"
-                        removeArrowOnDeviceType={["tablet", "mobile"]}
-                    >
-                        <div>
-                            아직 준비 되지 않았어요!
-                        </div>
-                        {/*<div>*/}
-                        {/*    <PhotoCard img={paris} title={'파리'} type={'행복'} accompany={'친구'}/>*/}
-                        {/*</div>*/}
-                    </Carousel>
+                    {/*<Carousel*/}
+                    {/*    responsive={responsive}*/}
+                    {/*    itemClass="image-item"*/}
+                    {/*    removeArrowOnDeviceType={["tablet", "mobile"]}*/}
+                    {/*>*/}
+                        <S.EmptyMessage>아직 준비되지 않은 서비스 입니다.</S.EmptyMessage>
+                    {/*</Carousel>*/}
                 </S.Scrapped>
+
                 <S.ButtonGroup>
-                    <S.ButtonContainer><BasicButton theme={"yellow"} style={{height: "40px"}}>프로필수정</BasicButton></S.ButtonContainer>
+                    <S.ButtonContainer><BasicButton theme={"yellow"} style={{height: "40px"}} onClick={() => history.push('/mypage-edit')}>프로필수정</BasicButton></S.ButtonContainer>
                     <S.ButtonContainer className={"lastone"}><BasicButton theme={"default"} style={{height: "40px"}} onClick={logoutHandler}>로그아웃</BasicButton></S.ButtonContainer>
                 </S.ButtonGroup>
-
-
             </S.Container>
             {/*<Footer/>*/}
         </>
