@@ -5,8 +5,10 @@ import {useDispatch, useSelector} from "react-redux";
 
 import * as journeySelector from "../../store/journey/selectors";
 import * as placeSelector from "../../store/place/selectors";
+import * as userSelector from "../../store/user/selectors";
 import * as journeyActions from "../../store/journey/actions";
 import * as placeActions from "../../store/place/actions";
+import * as userActions from "../../store/user/actions";
 
 import Chip from "../../components/common/Chip";
 import Scrollbars from "react-custom-scrollbars-2";
@@ -28,7 +30,7 @@ const S = {
     `,
     Background: styled.div<{img: string}>`
       width: 100%;
-      height: 200px;
+      height: 250px;
       background: url(${props => props.img});
       background-size: cover;
       
@@ -43,39 +45,39 @@ const S = {
     `,
     TitleContainer: styled.div`
         display: block;
-        padding-top: 60px;
+        padding-top: 20px;
         color: white;
         text-align: center;
         h1{
+          margin-top: 30px;
           font-weight: 600;
-          font-size: 30px;
+          font-size: 1.5rem;
         }
         p {
           padding-top: 5px;
           font-size: 10px;
           font-weight: 400;
         }
-        div{
-          display: inline;
+        .chips {
+          display: inline-flex;
         }
+       
       @media (min-width: 768px) {
-        padding-top: 100px;
+        padding-top: 50px;
         h1{
-          font-size: 55px;
+          font-size: 2rem;
         }
       }
       
     `,
     UserInfo: styled.div`
-        width: 300px;
-        height: 60px;
-      background: #F6F6F6;
-      border: 1px solid #E8E8E8;
-      box-sizing: border-box;
-      border-radius: 100px;
-        margin: 10px auto;
-        padding: 0 20px;
-        
+      margin: 0 auto;
+      //padding: 5px 20px;
+      p{
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
       @media (min-width: 768px) {
         //width: 90%;
         text-align: center;
@@ -84,6 +86,14 @@ const S = {
         //width: 80%;
         text-align: center;
       }
+    `,
+    ProfileCircle: styled.div<{photo: string}>`
+        margin: 20px auto 0;
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+        background-image: url(${props => props.photo});
+        background-size: cover;
     `,
     Content: styled.div`
         margin: 25px 0;
@@ -183,6 +193,7 @@ function JourneyDetailPage() {
     const dispatch = useDispatch()
     const getJourney = useSelector(journeySelector.getJourneyDetail)
     const getPlaces = useSelector(placeSelector.getPlaceByJourney)
+    const getUser = useSelector(userSelector.getUser)
 
     const params = useParams<{ id: string }>()
     const history = useHistory()
@@ -194,6 +205,10 @@ function JourneyDetailPage() {
         dispatch(placeActions.getPlaceByJourneyAsync.request({id: parseInt(params.id)}))
     },[])
 
+    useEffect(()=>{
+        dispatch(userActions.getUserDetailAsync.request({id: getJourney.userId+''}))
+    },[getJourney])
+
 
 
     return(
@@ -204,16 +219,18 @@ function JourneyDetailPage() {
                     <S.BackgroundFilter>
                         <S.TitleContainer>
                             <h1>{getJourney.journeyName}</h1>
-                            <div>
+
+                            <S.UserInfo>
+                                <S.ProfileCircle photo={getUser.userImg}/>
+                                <p>{getJourney.userName}</p>
+                            </S.UserInfo>
+                            <div className={'chips'}>
                                 <Chip color={"orange"}>{getJourney.type}</Chip>
                                 <Chip color={"pink"}>{getJourney.accompany==='solo'?'solo trip':'with '+ getJourney.accompany }</Chip>
                             </div>
                         </S.TitleContainer>
                     </S.BackgroundFilter>
                 </S.Background>
-                <S.UserInfo>
-                    {getJourney.userName}
-                </S.UserInfo>
                 <S.Content>
                     <S.PostContainer id={'photocard'}>
                         <img src={getJourney.image} alt="photo"/>
