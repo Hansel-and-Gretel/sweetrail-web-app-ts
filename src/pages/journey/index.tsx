@@ -15,6 +15,8 @@ import BasicButton from "../../components/common/Button";
 import Navbar from "../../components/common/Nav/Navbar";
 import * as colors from './../../../src/styles/colors';
 import PhotoCard from "../../components/common/Card";
+import paper from '../../assets/img/paper.jpeg'
+import {lightGray} from "./../../../src/styles/colors";
 
 
 
@@ -65,18 +67,21 @@ const S = {
       
     `,
     UserInfo: styled.div`
-        width: 90%;
+        width: 300px;
         height: 60px;
-        background-color: ${colors.lightGray};
-        border-radius: 10px;
+      background: #F6F6F6;
+      border: 1px solid #E8E8E8;
+      box-sizing: border-box;
+      border-radius: 100px;
         margin: 10px auto;
         padding: 0 20px;
+        
       @media (min-width: 768px) {
-        width: 90%;
+        //width: 90%;
         text-align: center;
       }
       @media (min-width: 1200px) {
-        width: 80%;
+        //width: 80%;
         text-align: center;
       }
     `,
@@ -93,8 +98,8 @@ const S = {
     PostContainer: styled.div`
       width: 100%;
       text-align: center;
-      background: white;
-      border: 1px solid ${colors.gray55};
+      background: ${paper};
+      border: 1px solid ${lightGray};
       
       img {
         margin: 10% 3% 5%;
@@ -181,12 +186,15 @@ function JourneyDetailPage() {
 
     const params = useParams<{ id: string }>()
     const history = useHistory()
+    const [user, setUser] = useState('')
 
     useEffect(()=> {
         window.scrollTo(0, 0)
         dispatch(journeyActions.getJourneyDetailAsync.request({id: parseInt(params.id)}))
         dispatch(placeActions.getPlaceByJourneyAsync.request({id: parseInt(params.id)}))
     },[])
+
+
 
     return(
         <>

@@ -92,11 +92,11 @@ const responsive = {
         items: 5
     },
     desktop: {
-        breakpoint: { max: 3000, min: 1024 },
+        breakpoint: { max: 3000, min: 1030 },
         items: 4
     },
     tablet: {
-        breakpoint: { max: 1024, min: 464 },
+        breakpoint: { max: 1030, min: 464 },
         items: 2
     },
     mobile: {
@@ -174,7 +174,7 @@ function MainPage() {
                     </Carousel>
                 </S.FirstContainer>
                 <S.FirstContainer>
-                    <h3><h5>Based on Your Journey Type</h5>{journeyType}</h3>
+                    <h3><p>Based on Your Journey Type</p>{journeyType}</h3>
                     <Carousel
                         responsive={responsive}
                         itemClass="image-item"
