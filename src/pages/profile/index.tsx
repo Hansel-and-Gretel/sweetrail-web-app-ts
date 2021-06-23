@@ -19,7 +19,8 @@ import paris from "../../assets/img/paris.jpeg";
 import {deleteCookie} from "../../lib/cookie";
 // @ts-ignore
 import {get} from "lodash";
-import {useHistory} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
+import * as placeActions from "../../store/place/actions";
 
 
 const responsive = {
@@ -158,36 +159,22 @@ const S = {
 
 }
 
-function MyPage() {
+function Profile() {
 
     const dispatch = useDispatch()
-    const getUser = useSelector(userSelector.getAuth)
+    const getUser = useSelector(userSelector.getUser)
     const history = useHistory()
+    const params = useParams<{ id: string }>()
 
     const [userId, setUserId] = useState(0)
-    const getMyJourneyList = useSelector(journeySelector.getProfileJourneyList)
+    const getJourenyLsit = useSelector(journeySelector.getProfileJourneyList)
 
-    const [cookie] = useCookies(['x_auth'])
-    const trailToken = get(cookie,'x_auth')
 
     useEffect(()=>{
-        dispatch(userActions.getAuthAsync.request(trailToken))
+        dispatch(userActions.getUserDetailAsync.request({id: params.id}))
+        dispatch(journeyActions.fetchOtherJourneyListAsync.request({id: params.id}))
     },[])
 
-    useEffect(()=>{
-        setUserId(getUser.user.userId)
-    },[getUser])
-
-    useEffect(()=>{
-        dispatch(journeyActions.fetchMyJourneyListAsync.request({id: userId.toString()}))
-    },[userId])
-
-    const logoutHandler = () => {
-        /* TODO : 로그아웃 코드 */
-        deleteCookie('x_auth')
-        window.location.replace("/")
-        // dispatch(userActions.logoutUserAsync.request())
-    }
 
     return(
         <>
@@ -195,24 +182,25 @@ function MyPage() {
             <S.Container>
                 <S.Background/>
                 <S.UserContainer>
-                    <S.ProfileCircle photo={getUser.user.userImg}/>
+                    <S.ProfileCircle photo={getUser.userImg}/>
                     <S.InfoContainer>
-                        <p>{getUser.user.userName}</p>
+                        <p>{getUser.userName}</p>
                         <div>
-                            <Chip color={"pink"}>{getUser.user.lifeStyle}</Chip>
-                            <Chip color={"orange"}>{getUser.user.journeyType}</Chip>
+                            <Chip color={"pink"}>{getUser.lifeStyle}</Chip>
+                            <Chip color={"orange"}>{getUser.journeyType}</Chip>
                         </div>
                     </S.InfoContainer>
                 </S.UserContainer>
                 <S.Public>
-                    <h4>Public</h4>
+                    <h4>{getUser.userName}'s Journey</h4>
+                    {getJourenyLsit.data.length < 1 && <> 기록된 여정이없습니다.</>}
                     <Carousel
                         responsive={responsive}
                         itemClass="image-item"
-                        removeArrowOnDeviceType={["tablet", "mobile"]}
+                        removeArrowOnDeviceType={["mobile"]}
                     >
                         {
-                            getMyJourneyList.data?.map((journey, index)=>{
+                            getJourenyLsit.data?.map((journey, index)=>{
                                 if(journey.sharedFlag){
                                     return(
                                         <div onClick={() => history.push(`/journey/detail/${journey.id}`)}>
@@ -226,50 +214,6 @@ function MyPage() {
                         }
                     </Carousel>
                 </S.Public>
-
-                <S.Private>
-                    <h4>Private</h4>
-                    <Carousel
-                        responsive={responsive}
-                        itemClass="image-item"
-                        removeArrowOnDeviceType={["tablet", "mobile"]}
-                    >
-                        {
-                            getMyJourneyList.data?.map((journey, index)=>{
-                                if(!journey.sharedFlag){
-                                    return(
-                                        <div onClick={() => history.push(`/journey/detail/${journey.id}`)}>
-                                            <PhotoCard img={journey.image} title={journey.journeyName} type={journey.type} accompany={journey.accompany}/>
-                                        </div>
-                                    )
-                                }else{
-                                    <></>
-                                }
-                            })
-                        }
-                    </Carousel>
-                </S.Private>
-                <S.Scrapped>
-                    <h4>Scrapped</h4>
-                    <Carousel
-                        responsive={responsive}
-                        itemClass="image-item"
-                        removeArrowOnDeviceType={["tablet", "mobile"]}
-                    >
-                        <div>
-                            아직 준비 되지 않았어요!
-                        </div>
-                        {/*<div>*/}
-                        {/*    <PhotoCard img={paris} title={'파리'} type={'행복'} accompany={'친구'}/>*/}
-                        {/*</div>*/}
-                    </Carousel>
-                </S.Scrapped>
-                <S.ButtonGroup>
-                    <S.ButtonContainer><BasicButton theme={"yellow"} style={{height: "40px"}}>프로필수정</BasicButton></S.ButtonContainer>
-                    <S.ButtonContainer className={"lastone"}><BasicButton theme={"default"} style={{height: "40px"}} onClick={logoutHandler}>로그아웃</BasicButton></S.ButtonContainer>
-                </S.ButtonGroup>
-
-
             </S.Container>
             {/*<Footer/>*/}
         </>
@@ -277,4 +221,4 @@ function MyPage() {
     )
 }
 
-export default MyPage;
+export default Profile;

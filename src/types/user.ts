@@ -37,6 +37,14 @@ export interface UserType {
     image: string;
 }
 
+export interface UserDetail {
+    userId: number,
+    userImg: string,
+    userName: string,
+    lifeStyle: string,
+    journeyType: string
+}
+
 export interface LoginData {
     email: string,
     password: string,

@@ -1,6 +1,14 @@
 import {createAction, createAsyncAction} from 'typesafe-actions'
 import {Journey} from "../../types/journey";
-import {AuthType, LoginData, LoginResType, LogoutResType, SignUpData, SignUpResType} from "../../types/user";
+import {
+    AuthType,
+    LoginData,
+    LoginResType,
+    LogoutResType,
+    SignUpData,
+    SignUpResType,
+    UserDetail
+} from "../../types/user";
 
 export const loginUserAsync = createAsyncAction(
     "LOGIN_USER_REQUEST",
@@ -25,3 +33,10 @@ export const getAuthAsync = createAsyncAction(
     "AUTH_USER_SUCCESS",
     "AUTH_USER_FAILURE"
 )<{token: string}, LoginResType, undefined>();
+
+
+export const getUserDetailAsync = createAsyncAction(
+    "GET_USER_REQUEST",
+    "GET_USER_SUCCESS",
+    "GET_USER_FAILURE"
+)<{id: string }, UserDetail, undefined>();

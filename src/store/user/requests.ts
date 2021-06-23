@@ -45,3 +45,11 @@ export const getAuth = async (token: string) => {
     return data
 }
 
+
+export const userDetail = async (id:string) => {
+    const data = await api.request<ApiResponse<LogoutResType>>({
+        method: 'get',
+        url: `/api/user/user-info/${id}`,
+    })
+    return data
+}

@@ -72,6 +72,15 @@ export function* getAuthSaga(action: ActionType<typeof actions.getAuthAsync.requ
     }
 }
 
+export function* getUserDetail(action: ActionType<typeof actions.getUserDetailAsync.request>) {
+    try {
+        const data = yield call(request.userDetail, action.payload.id)
+        yield put(actions.getUserDetailAsync.success(data.data))
+    } catch (e) {
+        yield put(actions.getUserDetailAsync.failure())
+        console.log('사용자 정보를 불러오는데 에러 발생 : '+e)
+    }
+}
 
 export default function* () {
     yield all([
@@ -79,6 +88,7 @@ export default function* () {
         takeLeading(actions.signupUserAsync.request, fetchSignUpSaga),
         takeEvery(actions.getAuthAsync.request, getAuthSaga),
         takeEvery(actions.logoutUserAsync.request, fetchLogoutSaga),
+        takeEvery(actions.getUserDetailAsync.request, getUserDetail),
     ])
 }
 

@@ -21,6 +21,7 @@ import * as userActions from "./store/user/actions";
 import MyPage from "./pages/mypage";
 import JourneyDetailPage from "./pages/journey";
 import MapPage from "./pages/map";
+import Profile from "./pages/profile";
 
 
 
@@ -49,6 +50,7 @@ function AppRoute() {
                     <Route exact path="/signup" render={props => trailToken ? <Redirect to={{ pathname: "/main"}} /> : <SignUpPage/>} />
                     <Route exact path="/login" render={props => trailToken ? <Redirect to={{ pathname: "/main"}} /> : <LoginPage/>} />
                     <Route exact path="/mypage" render={props => trailToken ? <MyPage/> : <Redirect to={{ pathname: "/login"}} />} />
+                    <Route exact path="/profile/:id" render={props => trailToken ? <Profile/> : <Redirect to={{ pathname: "/login"}} />} />
                     <Route exact path="/journey/detail/:id" component={JourneyDetailPage} />
                     <Route exact path="/map/:id" component={MapPage} />
                     {/*<Route exact path="/profile/:id" render={props => trailToken ? <MyPage/> : <Redirect to={{ pathname: "/login"}} />} />*/}

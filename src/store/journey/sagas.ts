@@ -25,7 +25,7 @@ export function* fetchMyJourneyListSaga(action: ActionType<typeof actions.fetchM
 
 export function* fetchOtherJourneyListSaga(action: ActionType<typeof actions.fetchOtherJourneyListAsync.request>) {
     try {
-        const data = yield call(request.getMyJourneyList, action.payload.id)
+        const data = yield call(request.getOtherJourneyList, action.payload.id)
         yield put(actions.fetchOtherJourneyListAsync.success(data))
     } catch (e) {
         yield put(actions.fetchOtherJourneyListAsync.failure())

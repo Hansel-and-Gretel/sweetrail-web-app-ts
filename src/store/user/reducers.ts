@@ -19,9 +19,17 @@ export interface UserState {
         }
         loading: boolean;
         error: boolean;
-    };
+    },
     signUp: {
         isMember: boolean;
+        loading: boolean;
+    },
+    user: {
+        userId: number;
+        userName: string;
+        userImg: string;
+        journeyType: string;
+        lifeStyle: string;
         loading: boolean;
     }
 }
@@ -45,6 +53,14 @@ const initialState: UserState = {
     signUp: {
         isMember: false,
         loading: false
+    },
+    user: {
+        userId: 0,
+        userName: '',
+        userImg: '',
+        journeyType: '',
+        lifeStyle: '',
+        loading:false
     }
 }
 
@@ -100,3 +116,15 @@ export default createReducer<UserState, Actions>(initialState)
                 loading: false
             }}))
     .handleAction(actions.getAuthAsync.failure, (state, action) => ({...state, auth: { ...state.auth, isAuth: false, loading: false }}))
+    .handleAction(actions.getUserDetailAsync.request, (state) => ({...state, user: { ...state.user, loading: true }}))
+    .handleAction(actions.getUserDetailAsync.success, (state, action) => ({...state,
+            user: {
+                userId: action.payload.userId,
+                userName: action.payload.userName,
+                userImg: action.payload.userImg,
+                journeyType: action.payload.journeyType,
+                lifeStyle: action.payload.lifeStyle,
+                loading: false
+            },
+    }))
+    // .handleAction(actions.getUserDetailAsync.failure, (state, action) => ({...state, auth: { ...state.auth, loading: false }}))
