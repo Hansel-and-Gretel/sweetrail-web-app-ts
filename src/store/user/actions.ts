@@ -4,7 +4,7 @@ import {
     AuthType,
     LoginData,
     LoginResType,
-    LogoutResType,
+    LogoutResType, ProfileUpdateResType,
     SignUpData,
     SignUpResType,
     UserDetail
@@ -40,3 +40,10 @@ export const getUserDetailAsync = createAsyncAction(
     "GET_USER_SUCCESS",
     "GET_USER_FAILURE"
 )<{id: string }, UserDetail, undefined>();
+
+
+export const uploadProfileImgAsync = createAsyncAction(
+    "UPLOAD_PROFILE_IMG_REQUEST",
+    "UPLOAD_PROFILE_IMG_SUCCESS",
+    "UPLOAD_PROFILE_IMG_FAILURE"
+)<{ formdata: FormData }, ProfileUpdateResType, undefined>();

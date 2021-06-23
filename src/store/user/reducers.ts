@@ -127,4 +127,3 @@ export default createReducer<UserState, Actions>(initialState)
                 loading: false
             },
     }))
-    // .handleAction(actions.getUserDetailAsync.failure, (state, action) => ({...state, auth: { ...state.auth, loading: false }}))

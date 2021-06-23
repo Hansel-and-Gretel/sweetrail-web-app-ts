@@ -11,6 +11,7 @@ import * as userSelector from './selectors';
 import {get} from "lodash";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {useHistory} from "react-router-dom";
 
 
 export function* fetchLoginSaga(action: ActionType<typeof actions.loginUserAsync.request>) {
@@ -72,7 +73,7 @@ export function* getAuthSaga(action: ActionType<typeof actions.getAuthAsync.requ
     }
 }
 
-export function* getUserDetail(action: ActionType<typeof actions.getUserDetailAsync.request>) {
+export function* getUserDetailSaga(action: ActionType<typeof actions.getUserDetailAsync.request>) {
     try {
         const data = yield call(request.userDetail, action.payload.id)
         yield put(actions.getUserDetailAsync.success(data.data))
@@ -82,13 +83,26 @@ export function* getUserDetail(action: ActionType<typeof actions.getUserDetailAs
     }
 }
 
+
+export function* uploadProfileImageSaga(action: ActionType<typeof actions.uploadProfileImgAsync.request>) {
+    try {
+        const data = yield call(request.uploadProfileImg, action.payload.formdata)
+        yield put(actions.uploadProfileImgAsync.success(data))
+        alert('프로필 사진 업로드에 성공했습니다.')
+        window.location.replace("/mypage")
+    } catch (e) {
+        yield put(actions.uploadProfileImgAsync.failure())
+    }
+}
+
 export default function* () {
     yield all([
         takeEvery(actions.loginUserAsync.request, fetchLoginSaga),
         takeLeading(actions.signupUserAsync.request, fetchSignUpSaga),
         takeEvery(actions.getAuthAsync.request, getAuthSaga),
         takeEvery(actions.logoutUserAsync.request, fetchLogoutSaga),
-        takeEvery(actions.getUserDetailAsync.request, getUserDetail),
+        takeEvery(actions.getUserDetailAsync.request, getUserDetailSaga),
+        takeEvery(actions.uploadProfileImgAsync.request, uploadProfileImageSaga),
     ])
 }
 

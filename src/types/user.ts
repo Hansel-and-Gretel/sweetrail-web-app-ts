@@ -18,6 +18,10 @@ export interface LogoutResType {
     logoutSuccess: boolean
 }
 
+export interface ProfileUpdateResType {
+    uploadSuccess: boolean
+}
+
 export interface AuthType {
     isAuth: boolean;
     userId: number;
@@ -57,3 +61,8 @@ export interface SignUpData {
     lifeStyle: string,
     journeyType: string
 }
+//
+// export interface ProfileData {
+//     image: FormData,
+//     userId: number
+// }
