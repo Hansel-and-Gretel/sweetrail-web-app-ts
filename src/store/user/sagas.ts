@@ -68,7 +68,7 @@ export function* getAuthSaga(action: ActionType<typeof actions.getAuthAsync.requ
 
     } catch (e) {
         yield put(actions.signupUserAsync.failure())
-        console.log('Authentication is not certified')
+        console.log('Authentication is not certified'+e)
     }
 }
 
