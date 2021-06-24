@@ -140,18 +140,20 @@ const S = {
       width: 100%;
       text-align: center;
       margin: 50px 0;
+      
       div {
-        background-color: aliceblue;
+        background-color: white;
         border-radius: 10px;
         width: 100%;
         padding: 0 10px;
         margin: 20px auto;
         p {
-          text-align: left;
+          cursor: pointer;
+          text-align: center;
           font-size: 1rem;
           font-weight: bold;
-          padding: 10px;
-          background-color: white;
+          padding: 10px 10px 0 10px;
+          //background-color: white;
           border-radius: 10px;
         }
       }
@@ -163,6 +165,13 @@ const S = {
         width: 30%;
       }
     `,
+    PlaceList: styled.div`
+      filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.15));
+      img{
+        width: 12px;
+        height: 15px;
+      }
+    `
 }
 
 const copyDOM = (owner: string) => {
@@ -239,18 +248,23 @@ function JourneyDetailPage() {
 
                     <S.MapContainer>
                         <h3>Places</h3>
-                        <div>
-                            <Scrollbars
-                                style={{ height: 500}}>
-                                {
-                                    getPlaces.placeList?.map((place,index)=>{
-                                        return(
-                                            <p>Place {index+1}: {place.placeName}</p>
-                                        )
-                                    })
-                                }
-                            </Scrollbars>
-                        </div>
+                        <S.PlaceList>
+                            <div>
+                                <Scrollbars
+                                    style={{ height: 500}}>
+                                    {
+                                        getPlaces.placeList?.map((place,index)=>{
+                                            return(
+                                                <>
+                                                    <img src="https://static.wixstatic.com/media/2cd43b_355767b937cf431ebdbd851fc2f5254c~mv2.png/v1/fill/w_320,h_435,q_90/2cd43b_355767b937cf431ebdbd851fc2f5254c~mv2.png" alt=""/>
+                                                    <p onClick={()=>history.push(`/place/${place.id}`)}>{place.placeName}</p>
+                                                </>
+                                            )
+                                        })
+                                    }
+                                </Scrollbars>
+                            </div>
+                        </S.PlaceList>
                         <BasicButton theme={'default'} style={{fontWeight: 'bold'}} onClick={()=>history.push(`/map/${getJourney.id}`)}>On Map</BasicButton>
                     </S.MapContainer>
                 </S.Content>

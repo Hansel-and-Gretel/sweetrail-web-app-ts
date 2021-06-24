@@ -14,3 +14,13 @@ export interface Journey {
     updatedAt: string;
 }
 
+export const styleArray = [
+    'Adventure', 'Popular Places', 'Hipster','Solo Traveller', 'Nomadic', 'Food Lover', 'Geek', 'Shopping', 'History',
+    'Local Places', 'Festival', 'Art', 'Academic',
+    'Active', 'Bohemian', 'Hipster', 'Solo', 'Nomadic', 'Rural', 'Traditional', 'Back to the Land',
+    'Digital', 'Sustainable', 'Workaholic', 'Socialite', 'Academic', 'Groupie', 'Simple Living'
+]
+
+export const accompany = [
+    'Friends', 'Solo', 'Family', 'Random'
+]

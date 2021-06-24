@@ -7,9 +7,7 @@ import * as journeyActions from "../../store/journey/actions";
 import * as userSelector from "../../store/user/selectors";
 import * as journeySelector from "../../store/journey/selectors";
 
-import background from '../../assets/img/palm-tree.jpeg'
-import paris from '../../assets/img/paris.jpeg'
-import paris2 from '../../assets/img/paris2.jpeg'
+import background from '../../assets/img/beachh.jpeg'
 import Navbar from "../../components/common/Nav/Navbar";
 import InputBox from "../../components/common/Input";
 import Carousel from 'react-multi-carousel';
