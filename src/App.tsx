@@ -23,6 +23,8 @@ import JourneyDetailPage from "./pages/journey";
 import MapPage from "./pages/map";
 import Profile from "./pages/profile";
 import MyPageEdit from "./pages/mypage/edit";
+import ExplorePage from "./pages/explore";
+import PlacePage from "./pages/place";
 
 
 
@@ -47,13 +49,15 @@ function AppRoute() {
                 <Switch>
                     <Route exact path="/" component={LandingPage}/>
                     {/*<Route exact path="/main" component={MainPage}/>*/}
-                    <Route exact path="/main" render={props => trailToken ? <MainPage/> : <Redirect to={{ pathname: "/"}}/> } />
+                    <Route exact path="/main" render={props => trailToken ? <MainPage/> : <Redirect to={{ pathname: "/login"}}/> } />
                     <Route exact path="/signup" render={props => trailToken ? <Redirect to={{ pathname: "/main"}} /> : <SignUpPage/>} />
                     <Route exact path="/login" render={props => trailToken ? <Redirect to={{ pathname: "/main"}} /> : <LoginPage/>} />
                     <Route exact path="/mypage" render={props => trailToken ? <MyPage/> : <Redirect to={{ pathname: "/login"}} />} />
                     <Route exact path="/mypage-edit" render={props => trailToken ? <MyPageEdit/> : <Redirect to={{ pathname: "/login"}} />} />
                     <Route exact path="/profile/:id" render={props => trailToken ? <Profile/> : <Redirect to={{ pathname: "/login"}} />} />
                     <Route exact path="/journey/detail/:id" component={JourneyDetailPage} />
+                    <Route exact path="/place/:id" component={PlacePage} />
+                    <Route exact path="/explore" component={ExplorePage} />
                     <Route exact path="/map/:id" component={MapPage} />
                     {/*<Route exact path="/profile/:id" render={props => trailToken ? <MyPage/> : <Redirect to={{ pathname: "/login"}} />} />*/}
 

@@ -19,7 +19,7 @@ const S = {
         letter-spacing: -0.03em;
         border: none;
         border-radius: 100px;
-        font-weight: ${ props => props.bold ? '800': '400'}
+        font-weight: ${ props => props.bold ? 600: 400}
         text-align: center;
         cursor: pointer;
         

@@ -14,4 +14,4 @@ export const getAllPlaceAsync = createAsyncAction(
     "GET_ALL_PLACE_REQUEST",
     "GET_ALL_PLACE_RESPONSE",
     "GET_ALL_PLACE_FAILURE"
-)<{id: number}, Place[], undefined>();
+)<undefined, Place[], undefined>();

@@ -33,7 +33,7 @@ const Ul = styled.ul<{open: boolean}>`
 
   @media (max-width: 768px) {
     flex-flow: column nowrap;
-    background-color: ${colors.beigeYellow};
+    background-color: floralwhite;
     position: fixed;
     transform: ${({ open }) => open ? 'translateX(0)' : 'translateX(100%)'};
     top: 0;
@@ -69,9 +69,8 @@ const RightNav = ({ open } : Props) => {
 
             {trailToken
                 ?<>
-                    <li>Explore</li>
+                    <li onClick={()=> history.push('/explore')}>Explore</li>
                     <li>Recommendation</li>
-                    {/*<li>MyTrail</li>*/}
                     {/*<li className='pointColor' onClick={() => history.push(`/profile/${getUser?.user?.userId}`)}>Profile</li>*/}
                     <li className='pointColor' onClick={() => history.push(`/mypage`)}>My Page</li>
                     <li className='pointColor' onClick={logoutHandler}>Log Out</li>

@@ -88,6 +88,7 @@ const S = {
       }
     `,
     ProfileCircle: styled.div<{photo: string}>`
+        cursor: pointer;
         margin: 20px auto 0;
         width: 50px;
         height: 50px;
@@ -219,9 +220,8 @@ function JourneyDetailPage() {
                     <S.BackgroundFilter>
                         <S.TitleContainer>
                             <h1>{getJourney.journeyName}</h1>
-
                             <S.UserInfo>
-                                <S.ProfileCircle photo={getUser.userImg}/>
+                                <S.ProfileCircle photo={getUser.userImg} onClick={()=> history.push(`/profile/${getUser.userId}`)}/>
                                 <p>{getJourney.userName}</p>
                             </S.UserInfo>
                             <div className={'chips'}>

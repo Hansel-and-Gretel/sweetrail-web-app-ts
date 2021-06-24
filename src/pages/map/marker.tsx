@@ -5,10 +5,10 @@ import * as colors from "../../styles/colors";
 
 
 interface MarkerProps {
-    key: number;
+    key?: number;
     lat: number;
     lng: number;
-    text: string | number;
+    text?: string | number;
     show?: boolean;
     place: Place;
 }

@@ -28,6 +28,9 @@ const S = {
       background-size: cover;
 
       h1 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         padding: 80px 0 0 10px;
         font-size: 22px;
         font-weight: 800;
@@ -79,9 +82,12 @@ const PhotoCard = ({img, title, type, accompany, isPublic, children, ...restProp
             <div className={'first'}>
                 <Chip color={"orange"}>{type}</Chip>
             </div>
+            {accompany &&
             <div>
                 <Chip color={"pink"}>{accompany}</Chip>
             </div>
+            }
+
             {children}
         </S.PhotoCard>
     )
