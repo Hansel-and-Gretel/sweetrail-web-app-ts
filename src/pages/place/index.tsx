@@ -14,6 +14,7 @@ import GoogleMapReact from "google-map-react";
 // import {GOOGLE_MAP_KEY} from "../../constants/env";
 import Marker from "../map/marker";
 import {Place} from "../../types/place";
+import Chip from "../../components/common/Chip";
 
 
 interface mapProps {
@@ -43,10 +44,14 @@ const S = {
       width: 90vw;
       height: 70%;
       margin: 0 auto;
+      display: inline-block;
+      border-radius: 20px;
+      overflow: hidden;
+      filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.15));
       
       .map{
         width: 100%;
-        height: 50vh;
+        height: 35vh;
       }
 
       @media (min-width: 1200px) {
@@ -64,18 +69,14 @@ const S = {
         height: 70%;
         margin: 0 auto;
         padding: 10px;
-        img {
-          display: flex;
-          width: 300px;
-          height: 300px;
-          background-size: cover;
+        .grayfont {
+          color: gray;
         }
       @media (min-width: 768px) {
         padding: 20px;
         img {
           width: 420px;
           height: 420px;
-          background-size: cover;
         }
       }
         @media (min-width: 1200px) {
@@ -83,7 +84,36 @@ const S = {
             flex-direction: row;
             width: 50vw;
         }
+    `,
+    PlaceCard: styled.div`
+      margin-top: 10px;
+      padding: 7px;
+      background-color: #F6F6F6;
+      border-radius: 20px;
+      filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.15));
+      @media (min-width: 768px) {
+        padding: 20px;
+      }
+    `,
+    ImageContainer: styled.div`
+      display: flex;
+      justify-content: center;
+      img {
+        width: 300px;
+        height: 300px;
+        background-size: cover;
+        border-radius: 10px;
+        text-align: center;
+      }
+      @media (min-width: 768px) {
+        //padding: 20px;
+        img {
+          width: 420px;
+          height: 420px;
+        }
+      }
     `
+
 }
 
 function PlacePage() {
@@ -150,13 +180,17 @@ function PlacePage() {
                 <S.ContentContainer>
                     {
                         place && <>
-                            <h2>{place.placeName}</h2>
-                            <p>{place.createdAt}</p>
-                            <p>category: {place.category}</p>
-                            <p>{place.note}</p>
-                            <div>
-                                <img src={place.image} alt="장소사진"/>
-                            </div>
+                            <Chip color={'pink'}>{getPlaces.placeList[selected].category}</Chip>
+                            <S.PlaceCard>
+                                <h2>{place.placeName}</h2>
+                                <p>{place.createdAt}</p>
+                                <p>category: {place.category}</p>
+                                <p>{place.note}</p>
+                                <S.ImageContainer>
+                                    <img src={place.image} alt="장소사진"/>
+                                </S.ImageContainer>
+                            </S.PlaceCard>
+
                         </>
                     }
                 </S.ContentContainer>
