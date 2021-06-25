@@ -23,7 +23,7 @@ import Footer from "../../components/common/Footer";
 import {useCookies} from "react-cookie";
 // @ts-ignore
 import {get} from "lodash";
-import {useHistory} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 import BasicButton from "../../components/common/Button";
 import {Place} from "../../types/place";
 import {accompany, Journey, styleArray} from "../../types/journey";
@@ -171,13 +171,12 @@ function RecommendPage() {
     const history = useHistory()
     const getUser = useSelector(userSelector.getAuth)
     const getStyleJourneyList = useSelector(journeySelector.getStyleJourneyList)
-    const getMainJourneyList = useSelector(journeySelector.getMainJourneyList)
     const getPlaceList = useSelector(placeSelector.getAllPlaceList)
 
-    const [user, setUser] = useState(0)
-    const [journeyType, setJourneyType] = useState(getUser.user.journeyType)
-    const [lifeStyle, setLifeStyle] = useState(getUser.user.lifeStyle)
-    const [isJourney, setIsJourney] = useState(true)
+    const params = useParams<{ id: string }>()
+
+    // lifestyle or journey type => style
+    const [lifeStyle, setLifeStyle] = useState(params.id === '' ? getUser.user.lifeStyle : params.id)
     const [cookie] = useCookies(['x_auth'])
     const trailToken = get(cookie,'x_auth')
 
@@ -189,11 +188,9 @@ function RecommendPage() {
         dispatch(placeActions.getAllPlaceAsync.request())
     },[])
 
-    useEffect(()=>{
-        setJourneyType(getUser.user.journeyType)
-        setLifeStyle(getUser.user.lifeStyle)
-        setUser(getUser.user.userId)
-    },[getUser])
+    // useEffect(()=>{
+    //     setLifeStyle(getUser.user.lifeStyle)
+    // },[getUser])
 
     useEffect(() => {
         if(lifeStyle){
