@@ -230,8 +230,6 @@ function MyPage() {
                                             <PhotoCard img={journey.image} title={journey.journeyName} type={journey.type} accompany={journey.accompany}/>
                                         </div>
                                     )
-                                }else{
-                                    <></>
                                 }
                             })
                         }
@@ -254,8 +252,6 @@ function MyPage() {
                                             <PhotoCard img={journey.image} title={journey.journeyName} type={journey.type} accompany={journey.accompany}/>
                                         </div>
                                     )
-                                }else{
-                                    <></>
                                 }
                             })
                         }

@@ -70,7 +70,7 @@ const RightNav = ({ open } : Props) => {
             {trailToken
                 ?<>
                     <li onClick={()=> history.push('/explore')}>Explore</li>
-                    <li>Recommendation</li>
+                    <li onClick={ ()=> history.push('/recommendation')}>Recommendation</li>
                     {/*<li className='pointColor' onClick={() => history.push(`/profile/${getUser?.user?.userId}`)}>Profile</li>*/}
                     <li className='pointColor' onClick={() => history.push(`/mypage`)}>My Page</li>
                     <li className='pointColor' onClick={logoutHandler}>Log Out</li>

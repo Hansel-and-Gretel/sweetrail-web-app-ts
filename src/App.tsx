@@ -25,6 +25,7 @@ import Profile from "./pages/profile";
 import MyPageEdit from "./pages/mypage/edit";
 import ExplorePage from "./pages/explore";
 import PlacePage from "./pages/place";
+import RecommendPage from "./pages/recommendation";
 
 
 
@@ -58,6 +59,7 @@ function AppRoute() {
                     <Route exact path="/journey/detail/:id" component={JourneyDetailPage} />
                     <Route exact path="/place/:id" component={PlacePage} />
                     <Route exact path="/explore" component={ExplorePage} />
+                    <Route exact path="/recommendation" component={RecommendPage} />
                     <Route exact path="/map/:id" component={MapPage} />
                     {/*<Route exact path="/profile/:id" render={props => trailToken ? <MyPage/> : <Redirect to={{ pathname: "/login"}} />} />*/}
 

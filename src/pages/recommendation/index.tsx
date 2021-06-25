@@ -8,6 +8,7 @@ import * as placeActions from "../../store/place/actions";
 import * as userSelector from "../../store/user/selectors";
 import * as journeySelector from "../../store/journey/selectors";
 import * as placeSelector from "../../store/place/selectors";
+import * as colors from "../../styles/colors"
 
 import background from '../../assets/img/palm-tree.jpeg'
 import paris from '../../assets/img/paris.jpeg'
@@ -24,8 +25,33 @@ import {useCookies} from "react-cookie";
 import {get} from "lodash";
 import {useHistory} from "react-router-dom";
 import BasicButton from "../../components/common/Button";
+import {Place} from "../../types/place";
+import {accompany, Journey, styleArray} from "../../types/journey";
 
 
+const responsive = {
+    superLargeDesktop: {
+        // the naming can be any, depends on you.
+        breakpoint: { max: 4000, min: 3000 },
+        items: 10
+    },
+    desktop: {
+        breakpoint: { max: 3000, min: 1500 },
+        items: 7
+    },
+    ipad: {
+        breakpoint: { max: 1500, min: 1100 },
+        items: 6
+    },
+    tablet: {
+        breakpoint: { max: 1100, min: 464 },
+        items: 4
+    },
+    mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: 3
+    }
+};
 
 
 const S = {
@@ -36,9 +62,11 @@ const S = {
     
     `,
     Wrapper: styled.div`
-      
       margin: 0 auto;
       padding: 0 20px;
+      h3{
+        text-align: center;
+      }
       @media (max-width: 767px) {
         padding: 0 50px;
       },
@@ -71,21 +99,21 @@ const S = {
         
     `,
     ButtonContainer: styled.div`
-      display: flex;
       justify-content: center;
       align-items: center;
       margin: 0 auto;
-      padding: 0;
+      //padding-left: 1rem;
       div{
-        width: 100px;
-        margin: 2.5px 2.5px 0;
-        display: block;
+        cursor: pointer;
+        //margin: 2.5px 2.5px 0;
+        //display: inline-block;
+        --auto-grid-min-size: 16rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(var(--auto-grid-min-size), 1fr));
+        grid-gap: 1rem;
       }
       @media screen and (min-width: 768px) { //tablet
         margin-bottom: 0;
-        div{
-          width: 15%;
-        }
       }
         
     `,
@@ -122,6 +150,14 @@ const S = {
       @media (min-width: 768px) {
         height: 200px;
       }
+    `,
+    StyleChip: styled.div<{target: boolean}>`
+        width: auto;
+        padding: 10px 0;
+        border: gray 1px;
+        background-color: ${colors.mustard};
+        text-align: center;
+        color: ${ props => props.target ? 'white' : 'black'}
     `
 
 
@@ -129,44 +165,75 @@ const S = {
 }
 
 
-function ExplorePage() {
+function RecommendPage() {
 
     const dispatch = useDispatch()
     const history = useHistory()
+    const getUser = useSelector(userSelector.getAuth)
+    const getStyleJourneyList = useSelector(journeySelector.getStyleJourneyList)
     const getMainJourneyList = useSelector(journeySelector.getMainJourneyList)
     const getPlaceList = useSelector(placeSelector.getAllPlaceList)
 
+    const [user, setUser] = useState(0)
+    const [journeyType, setJourneyType] = useState(getUser.user.journeyType)
+    const [lifeStyle, setLifeStyle] = useState(getUser.user.lifeStyle)
     const [isJourney, setIsJourney] = useState(true)
+    const [cookie] = useCookies(['x_auth'])
+    const trailToken = get(cookie,'x_auth')
 
-    const setMode = () => {
-        setIsJourney(!isJourney)
-    }
 
     useEffect(()=>{
         window.scrollTo(0, 0)
+        dispatch(userActions.getAuthAsync.request(trailToken))
         dispatch(journeyActions.fetchMainJourneyListAsync.request())
         dispatch(placeActions.getAllPlaceAsync.request())
     },[])
+
+    useEffect(()=>{
+        setJourneyType(getUser.user.journeyType)
+        setLifeStyle(getUser.user.lifeStyle)
+        setUser(getUser.user.userId)
+    },[getUser])
+
+    useEffect(() => {
+        if(lifeStyle){
+            dispatch(journeyActions.fetchStyleJourneyListAsync.request({type: lifeStyle}))
+        }
+    },[lifeStyle])
+
 
     return(
         <>
             <Navbar/>
             <S.Container>
                 <S.TopContainer>
-                    <h1>Explore</h1>
+                    <h1>Recommendation</h1>
                     <S.ButtonContainer>
-                        <div>
-                            <BasicButton theme={ isJourney? 'red' : 'default' } style={{fontWeight: "bold"}} onClick={setMode} >Journeys</BasicButton>
-                        </div>
-                        <div>
-                            <BasicButton theme={isJourney? 'default': 'red'} style={{fontWeight: "bold"}} onClick={setMode}>Places</BasicButton>
-                        </div>
+                        <Carousel
+                            responsive={responsive}
+                            itemClass="image-item"
+                            removeArrowOnDeviceType={["tablet", "mobile"]}
+                        >
+                            {
+                                styleArray.map((style, index)=>{
+                                    return(
+                                        <div>
+                                            <S.StyleChip target={lifeStyle === style} style={{fontWeight: "bold"}} onClick={() => {
+                                                setLifeStyle(style)
+                                                console.log(style)
+                                            }} >{style}</S.StyleChip>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </Carousel>
                     </S.ButtonContainer>
                 </S.TopContainer>
                 <S.Wrapper>
+                    <h3>journeys</h3>
                     <S.FirstContainer>
                         {
-                            isJourney &&getMainJourneyList.data?.map((journey, index)=>{
+                            getStyleJourneyList.data?.map((journey, index)=>{
                                 return(
                                     <S.JourneyCard onClick={() => history.push(`/journey/detail/${journey.id}`)}>
                                         <PhotoCard img={journey.image} title={journey.journeyName} type={journey.type} accompany={journey.accompany}/>
@@ -174,14 +241,21 @@ function ExplorePage() {
                                 )
                             })
                         }
+
+                    </S.FirstContainer>
+                    <h3>places</h3>
+                    <S.FirstContainer>
                         {
-                            !isJourney && getPlaceList.placeList?.map((place, index)=>{
-                                return(
-                                    <S.JourneyCard onClick={() => history.push(`/place/${place.id}`)}>
-                                        <PhotoCard img={place.image} title={place.placeName+''} type={place.category} />
-                                    </S.JourneyCard>
-                                )
+                            getPlaceList.placeList?.map((place, index)=>{
+                                if(place.category === lifeStyle){
+                                    return(
+                                        <S.JourneyCard onClick={() => history.push(`/place/${place.id}`)}>
+                                            <PhotoCard img={place.image} title={place.placeName+''} type={place.category} />
+                                        </S.JourneyCard>
+                                    )
+                                }
                             })
+
                         }
                     </S.FirstContainer>
                 </S.Wrapper>
@@ -192,4 +266,5 @@ function ExplorePage() {
     )
 }
 
-export default ExplorePage;
+
+export default RecommendPage;

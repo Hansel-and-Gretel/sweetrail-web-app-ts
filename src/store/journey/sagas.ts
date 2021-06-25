@@ -45,6 +45,7 @@ export function* fetchStyleJourneyListSaga(action: ActionType<typeof actions.fet
     try {
         const data = yield call(request.getStyleJourneyList, action.payload.type)
         yield put(actions.fetchStyleJourneyListAsync.success(data))
+        console.log(data)
     } catch (e) {
         yield put(actions.fetchStyleJourneyListAsync.failure())
     }
